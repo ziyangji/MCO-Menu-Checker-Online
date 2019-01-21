@@ -12,7 +12,7 @@
 
 
 ## Project description
-A online preview of the RPI dining hall menus.
+An online preview of the RPI dining hall menus.
 Students and dinning hall staffs will be able to upload both text descriptions and pictures of dishes provided by each of the dinning halls
 The menus will be updated "mealy" by users, and we are considering to collaborate with the dinning halls to make it easier
 
