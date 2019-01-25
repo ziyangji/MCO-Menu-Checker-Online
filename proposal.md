@@ -3,7 +3,7 @@
 ## Team members:
 + Shikai Chen chens24@rpi.edu
 + Ruizhe Li lir7@rpi.edu
-+ Bogong Yang yangb7@rpi.edu
++ Yutao Sun suny12@rpi.edu
 + Haotian Zhang zhangh20@rpi.edu
 + Haolun Zhang zhangh21@rpi.edu
 + Xinyu Gu gux3@rpi.edu
@@ -34,4 +34,5 @@ The menus will be updated "mealy" by users, and we are considering to collaborat
 
 ### Backend
 + Node.js
++ PHP
 + Redis
