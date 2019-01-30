@@ -8,6 +8,8 @@
 + Haolun Zhang zhangh21@rpi.edu
 + Xinyu Gu gux3@rpi.edu
 + Sitong Liu lius15@rpi.edu
++ Ziyang Ji jiz@rpi.edu
++ Donglin Liu liud8@rpi.edu
 + Bogong Yang yangb7@rpi.edu
 
 
