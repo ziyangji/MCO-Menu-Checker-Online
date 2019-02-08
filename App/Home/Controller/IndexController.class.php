@@ -19,19 +19,23 @@ class IndexController extends CommonController
         $dininghall = array(
             'cms' => array(
                 'id' => 0,
-                'name' => "Commons Dining Hall"
+                'name' => "Commons Dining Hall",
+                'addr' => "TBD"
             ),
             'barh' => array(
                 'id' => 1,
-                'name' => "Barh Dining Hall"
+                'name' => "Barh Dining Hall",
+                'addr' => "100 Albright Ct"
             ),
             'sage' => array(
                 'id' => 2,
-                'name' => "Sage Dining Hall"
+                'name' => "Sage Dining Hall",
+                'addr' => "P8HC+WP"
             ),
             'blm' => array(
                 'id' => 3,
-                'name' => "Sage Dining Hall"
+                'name' => "Sage Dining Hall",
+                'addr' => "1800 6th Ave"
             ),
         );
 
