@@ -148,12 +148,18 @@
             </div>
         </footer>
         <script>
-            var module = "__MODULE__/";
+            var controller = "__CONTROLLER__/";
         </script>
-        
+
         <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <script type="text/javascript" src="__PUBLIC__/assets/bootstrap/js/bootstrap.js"></script>
-        <script src="__PUBLIC__/assets/javascripts/menu.js"></script>
+        <script>
+        $(function () {
+            $('.card-body').click(function () {
+                window.location.href = controller+"restaurant"+"?name="+$(this).children('.card-text').attr('code');
+            })
+        });
+        </script>
     </body>
     <style id="global-dark-mode" media="screen">html:before {
         content: " ";
