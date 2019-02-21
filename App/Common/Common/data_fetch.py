@@ -1,4 +1,5 @@
 import sys, json
+from selenium import webdriver
 
 # Load the data that PHP sent us
 try:
