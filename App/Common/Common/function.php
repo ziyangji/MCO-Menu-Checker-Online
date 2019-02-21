@@ -1,45 +1,16 @@
 <?php
-	// function arrange($tmp,$str)
-	// {
-	// 	$sub = array();
-	// 	for ($i=0; $i < count($tmp); $i++) {
-	// 		array_push($sub, $tmp[$i][$str]);
-	// 	}
-	// 	return array($str => $sub);
+	 function arrange($tmp,$str)
+	 {
+	 	// This is the data you want to pass to Python
+		$data = array('https://rensselaerdining.com/');
 
-	// }
+		// Execute the python script with the JSON data
+		$result = shell_exec('python ./data_fetch.py ' . escapeshellarg(json_encode($data)));
 
-	// function mergePoster($tmp,$array)
-	// {
+		// Decode the result
+		$resultData = json_decode($result, true);
 
-	// 	$poster = array();
-	// 	for ($i=0; $i < count($array); $i++) {
-	// 		$poster = array_merge($poster,arrange($tmp,$array[$i]));
-	// 	}
-	// 	return $poster;
-	// }
-
-	// function arrangePage($poster,$ppp)
-	// {
-	// 	$page = array(
-	// 		'dataCount' => count($poster),
-	// 		'ppp' => $ppp,
-	// 		'pageCount' => (int)(count($poster)/$ppp)+1,
-	// 		);
-	// 	return $page;
-	// }
-
-	// function getPage($table,$eachNum,$where)
-	// {
-	// 	$count = $table->where($where)->count();
-	// 	$page = new \Think\Page($count,$eachNum);
-	//
-	// 	$page->setConfig('prev','prev');
-  //   	$page->setConfig('next','next');
-  //   	$page->setConfig('last','last');
-  //   	$page->setConfig('first','first');
-  //   	$page->setConfig('theme','%FIRST% %UP_PAGE% %LINK_PAGE% %DOWN_PAGE% %END%');
-	//
-  //   	return $page;
-	//
-	// }
+		// This will contain: array('status' => 'Yes!')
+		var_dump($resultData);
+		
+	 }
