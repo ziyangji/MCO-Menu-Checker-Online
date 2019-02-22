@@ -8,8 +8,10 @@ except:
 	print "ERROR"
 	sys.exit(1)
 
+
+
 # Generate some data to send to PHP
-result = {'status': 'Yes!'}
+result = {'res': '', 'menu': '', 'img': ''}
 
 # Send it to stdout (to PHP)
 print json.dumps(result)
