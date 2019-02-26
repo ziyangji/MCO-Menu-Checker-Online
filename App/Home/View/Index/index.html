@@ -6,13 +6,52 @@
 		<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 		<script type="text/javascript" src="__PUBLIC__/assets/javascripts/default.js"></script>
 
+		<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 		<script type="text/javascript" src="__PUBLIC__/assets/bootstrap/js/bootstrap.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.9"></script>
 		<link rel="stylesheet" type="text/css" href="__PUBLIC__/assets/bootstrap/css/bootstrap.css"/>
 
     <link rel="stylesheet" type="text/css" href="__PUBLIC__/assets/stylesheets/default.css"/>
-	<title></title>
+		<style>
+
+				.type-wrap{
+						margin: 10px auto;
+						padding: 20px;
+						background: #f0f0f0;
+						border-radius: 5px;
+						border: #CCC 1px solid;
+				}
+
+
+		</style>
+	<title>MCO Online Menu Checker</title>
 </head>
 <body>
-	{$content}
+<p></p>
+<div class="container">
+		<div class="type-wrap" style="height: 50%;">
+    		<span id="typed6" style="white-space:pre;"></span>
+  	</div>
+</div>
 </body>
+<script>
+$(function() {
+
+		var controller = "__CONTROLLER__/";
+
+		var typed6 = new Typed('#typed6', {
+    strings: ['{$content[0]}\n{$content[1]}'],
+    typeSpeed: 40,
+    backSpeed: 0,
+    loop: false,
+		onComplete: (self) => {
+			window.setTimeout(function() {
+					window.location.href = controller+"menu";
+			}, 2000);
+
+		},
+  	});
+
+})
+</script>
 </html>
