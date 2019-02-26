@@ -11,6 +11,6 @@
 		$resultData = json_decode($result, true);
 
 		// This will contain: array('status' => 'Yes!')
-		var_dump($resultData);
+		return $resultData;
 		
 	 }
