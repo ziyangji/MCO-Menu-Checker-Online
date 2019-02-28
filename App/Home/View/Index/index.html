@@ -12,6 +12,7 @@
 		<link rel="stylesheet" type="text/css" href="__PUBLIC__/assets/bootstrap/css/bootstrap.css"/>
 
     <link rel="stylesheet" type="text/css" href="__PUBLIC__/assets/stylesheets/default.css"/>
+		<link rel="stylesheet" type="text/css" href="__PUBLIC__/assets/stylesheets/index.css"/>
 		<style>
 
 				.type-wrap{
@@ -22,34 +23,57 @@
 						border: #CCC 1px solid;
 				}
 
+				main{
+					height: 100%;
+				}
+
+				h1{
+					text-align: center;
+				}
 
 		</style>
 	<title>MCO Online Menu Checker</title>
 </head>
 <body>
-<p></p>
-<div class="container">
+
+<main role="main" class="form-signin">
+<div class="container center-block">
 		<div class="type-wrap" style="height: 50%;">
     		<span id="typed6" style="white-space:pre;"></span>
   	</div>
 </div>
+</main>
+
 </body>
 <script>
 $(function() {
 
 		var controller = "__CONTROLLER__/";
 
+		var quickShown = false;
+
+		$(document).on('keypress', function(e){
+        if (e.which == 13) {
+            window.location.href = controller+"menu";
+        }
+    });
+
 		var typed6 = new Typed('#typed6', {
-    strings: ['{$content[0]}\n{$content[1]}'],
-    typeSpeed: 40,
+    strings: ['<h1>{$content[0]}</h1>\n{$content[1]}'],
+    typeSpeed: 50,
     backSpeed: 0,
     loop: false,
 		onComplete: (self) => {
 			window.setTimeout(function() {
 					window.location.href = controller+"menu";
 			}, 2000);
-
 		},
+		onStart: (self) => {
+			if (quickShown) {
+					$(this).stop();
+					window.location.href = controller+"menu";
+			}
+		}
   	});
 
 })
