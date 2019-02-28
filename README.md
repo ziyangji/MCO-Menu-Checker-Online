@@ -1,7 +1,7 @@
 # MCO Project Proposal for Spring 2019
 
 ## Team members:
-+ Shikai Chen chens24@rpi.edu
++ Shikan Chen chens24@rpi.edu
 + Ruizhe Li lir7@rpi.edu
 + Yutao Sun suny12@rpi.edu
 + Haotian Zhang zhangh20@rpi.edu
@@ -31,11 +31,7 @@ The menus will be updated "mealy" by users, and we are considering to collaborat
 - Allow users to save favorite dishes
 - Notify the user when the user's favorite dishes are served
 
-## Languages or Platform we will be using for this project
-### Frontend
-+ Bootstrap
-
-### Backend
-+ Node.js
-+ PHP
-+ Redis
+## Model-View-Controller Design Pattern
++ Controller - ThinkPHP && Node.js
++ View - Bootstrap
++ Model - MySQL && Redis
