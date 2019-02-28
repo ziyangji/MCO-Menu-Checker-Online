@@ -31,7 +31,7 @@ The menus will be updated "mealy" by users, and we are considering to collaborat
 - Allow users to save favorite dishes
 - Notify the user when the user's favorite dishes are served
 
-## Technologies we will use or learn
+## Languages or Platform we will be using for this project
 ### Frontend
 + Bootstrap
 
