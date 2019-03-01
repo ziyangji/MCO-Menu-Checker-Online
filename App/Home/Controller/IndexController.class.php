@@ -18,7 +18,7 @@ class IndexController extends CommonController
         $this->display();
     }
     
-    public function menu()
+    public function home()
     {
         
         $dininghall = array(
