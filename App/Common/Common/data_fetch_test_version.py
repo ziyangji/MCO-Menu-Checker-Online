@@ -24,4 +24,3 @@ for index,item in enumerate(items):
 			file.flush()
 		file.close()  # 关闭文件
 		time.sleep(1)  # 自定义延时
-

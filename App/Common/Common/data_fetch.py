@@ -47,10 +47,26 @@ class Fetcher:
 		Returns:
 			Packed json file with information from the target dinning hall
 		'''
-
+		
+		# open url			
+		self.driver.get(self.url)
+		
+		source_code = self.driver.find_element_by_xpath("//*").get_attribute("outerHTML")
+		
+		soup = BeautifulSoup(source_code, 'html.parser')
+		
+		self.menu = {
+			"breakfast": null,
+			"lunch": null,
+			"dinner": null
+		}		
+		
+		self.menu["breakfast"] = soup.find_all(class_="breakfast")
+		self.menu["lunch"] = soup.find_all(class_="lunch")
+		self.menu["lunch"] = soup.find_all(class_="dinner")
+		
 		# TODO: Implement this function
 		pass
-
 
 
 # Load the data that PHP sent us
