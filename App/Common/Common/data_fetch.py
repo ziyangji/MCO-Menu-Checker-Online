@@ -63,9 +63,9 @@ class Fetcher:
 		
 		self.menu["breakfast"] = soup.find_all(class_="breakfast")
 		self.menu["lunch"] = soup.find_all(class_="lunch")
-		self.menu["lunch"] = soup.find_all(class_="dinner")
+		self.menu["dinner"] = soup.find_all(class_="dinner")
 		
-		# TODO: Implement this function
+		# TODO: Structure out the data in self.menu and return
 		pass
 
 
