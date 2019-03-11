@@ -8,7 +8,8 @@ from bs4 import BeautifulSoup
 
 
 class Fetcher:
-	''' The crawler class used for retrieving information from sodexo's menu page
+	'''
+	The crawler class used for retrieving information from sodexo's menu page
 	Note:
 		Blitman Commons is not yet included in sodexo's page. The class should throw an error if blm is at request
 
@@ -56,9 +57,9 @@ class Fetcher:
 		soup = BeautifulSoup(source_code, 'html.parser')
 		
 		self.menu = {
-			"breakfast": null,
-			"lunch": null,
-			"dinner": null
+			"breakfast": None,
+			"lunch": None,
+			"dinner": None
 		}		
 		
 		self.menu["breakfast"] = soup.find_all(class_="breakfast")
@@ -72,8 +73,8 @@ class Fetcher:
 # Load the data that PHP sent us
 try:
 	data = json.loads(sys.argv[1])
-except:
-	print("ERROR")
+except json.JSONDecodeError:
+	print("ERROR decoding JSON")
 	sys.exit(1)
 
 
