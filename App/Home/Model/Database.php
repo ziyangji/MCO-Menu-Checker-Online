@@ -15,7 +15,7 @@ class Database
     private $con;
     
     /** Database construction
-        @param server The server's address
+        @param server The server's address, in form of ip:port
         @param username user's username in the server
         @param password user's password in the server
         @requires server, username, and password != null
@@ -39,9 +39,14 @@ class Database
     /** returns today's date
      @return date
      */
-    public function date()
+    public function getDate()
     {
         return $this->date;
+    }
+
+    public function updateDate()
+    {
+        $this->date = date('Y-m-d');
     }
 
     /** returns whether the user is connect to its account
@@ -60,10 +65,34 @@ class Database
     }
 
     /** get a picture
+     * return null if there is an error
      */
-    public function getPic()
+    public function getMenu($rest, $time, $today=true, $date=null)
     {
-        pass;
+
+        if(!is_bool($today))
+            #error
+            #the input $today should be a boolean
+            return null;
+
+        ##update the required date
+        if($today)
+            $date = $this->date;
+
+        if($date == null)
+        {
+            #error
+            #date should not be empty when checking other days' menu
+            return null;
+        }
+
+        #TODO: check date format
+
+        #TODO: mysql statement
+
+        ##TODO: get data from  database
+
+        return null;
     }
 
 }
