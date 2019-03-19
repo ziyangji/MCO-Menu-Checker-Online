@@ -11,6 +11,7 @@ class Database
     private $server;
     private $username;
     private $password;
+    private $db_name;
     private $date;
     private $con;
     
@@ -25,6 +26,7 @@ class Database
         $this->server = $server;
         $this->username = $username;
         $this->password = $password;
+        $this->connect();
 
     }
 
@@ -54,6 +56,27 @@ class Database
      */
     private function connect()
     {
+        #close the connection if there is one before
+        if($this->con)
+        {
+            mysqli_close($this->con);
+        }
+
+        #reconnect to mysql
+        $this->con = mysqli_connect($this->server, $this->username, $this->password);
+
+        #throw exception if connection fails.
+        if(!$this->checkConnection()) {
+            throw new Exception('Connection Failed.');
+        }
+    }
+
+    private function checkConnection()
+    {
+        if($this->con)
+        {
+            return false;
+        }
         return true;
     }
 

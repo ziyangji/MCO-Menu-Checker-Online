@@ -8,5 +8,5 @@
 
 class DatabaseModel extends Model
 {
-    
+
 }
