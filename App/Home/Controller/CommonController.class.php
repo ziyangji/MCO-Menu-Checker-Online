@@ -12,4 +12,6 @@ class CommonController extends Controller
 //			exit;
 		}
 	}
+	
+	
 }
