@@ -8,10 +8,9 @@
 
 class Database
 {
-    private $server;
-    private $username;
-    private $password;
-    private $db_name;
+    private $server; #"localhost" is fine
+    private $username; #database username
+    private $password; #password of username
     private $date;
     private $con;
     
@@ -27,6 +26,7 @@ class Database
         $this->username = $username;
         $this->password = $password;
         $this->connect();
+        $this->updateDate();
 
     }
 
@@ -46,15 +46,104 @@ class Database
         return $this->date;
     }
 
+    # also updates database
     public function updateDate()
     {
-        $this->date = date('Y-m-d');
+        #update date
+        $this->date = date('Y_m_d');
+
+        #create new database for new date
+        $con = mysqli_connect($this->server, $this->username, $this->password);
+        if(!$con)
+        {
+            throw new Exception('Connection Failed.');
+        }
+
+        $result = mysqli_query($con, "Create DATABASE {$this->date}");
+        if(! $result)
+        {
+            throw new Exception("Error creating database: " . $con->error);
+        }
+        $con->close();
+
+        #switch to new database
+        $con = mysqli_connect($this->server, $this->username, $this->password, $this->date);
+        if(!$con)
+        {
+            throw new Exception('Connection Failed.');
+        }
+
+        #create table for commons_breakfast
+        $sql = "CREATE TABLE commons_breakfast(id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, pic_name VARCHAR(30) NOT NULL, pic_addr VARCHAR(30) NOT NULL,)";
+        if(!mysqli_query($con, $sql))
+        {
+            throw new Exception("Error creating table: " . mysqli_error($con));
+        }
+
+        #create table for commons_lunch
+        $sql = "CREATE TABLE commons_lunch(id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, pic_name VARCHAR(30) NOT NULL, pic_addr VARCHAR(30) NOT NULL,)";
+        if(!mysqli_query($con, $sql))
+        {
+            throw new Exception("Error creating table: " . mysqli_error($con));
+        }
+
+        #create table for commons_dinner
+        $sql = "CREATE TABLE commons_dinner(id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, pic_name VARCHAR(30) NOT NULL, pic_addr VARCHAR(30) NOT NULL,)";
+        if(!mysqli_query($con, $sql))
+        {
+            throw new Exception("Error creating table: " . mysqli_error($con));
+        }
+
+        #create table for sage_breakfast
+        $sql = "CREATE TABLE sage_breakfast(id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, pic_name VARCHAR(30) NOT NULL, pic_addr VARCHAR(30) NOT NULL,)";
+        if(!mysqli_query($con, $sql))
+        {
+            throw new Exception("Error creating table: " . mysqli_error($con));
+        }
+
+        #create table for sage_lunch
+        $sql = "CREATE TABLE sage_lunch(id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, pic_name VARCHAR(30) NOT NULL, pic_addr VARCHAR(30) NOT NULL,)";
+        if(!mysqli_query($con, $sql))
+        {
+            throw new Exception("Error creating table: " . mysqli_error($con));
+        }
+
+        #create table for sage_dinner
+        $sql = "CREATE TABLE sage_dinner(id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, pic_name VARCHAR(30) NOT NULL, pic_addr VARCHAR(30) NOT NULL,)";
+        if(!mysqli_query($con, $sql))
+        {
+            throw new Exception("Error creating table: " . mysqli_error($con));
+        }
+
+        #create table for barh_breakfast
+        $sql = "CREATE TABLE sage_breakfast(id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, pic_name VARCHAR(30) NOT NULL, pic_addr VARCHAR(30) NOT NULL,)";
+        if(!mysqli_query($con, $sql))
+        {
+            throw new Exception("Error creating table: " . mysqli_error($con));
+        }
+
+        #create table for barh_lunch
+        $sql = "CREATE TABLE sage_lunch(id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, pic_name VARCHAR(30) NOT NULL, pic_addr VARCHAR(30) NOT NULL,)";
+        if(!mysqli_query($con, $sql))
+        {
+            throw new Exception("Error creating table: " . mysqli_error($con));
+        }
+
+        #create table for barh_dinner
+        $sql = "CREATE TABLE sage_dinner(id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, pic_name VARCHAR(30) NOT NULL, pic_addr VARCHAR(30) NOT NULL,)";
+        if(!mysqli_query($con, $sql))
+        {
+            throw new Exception("Error creating table: " . mysqli_error($con));
+        }
+
+        $con->close();
+
     }
 
     /** returns whether the user is connect to its account
      @return server's address
      */
-    private function connect()
+    public function connect()
     {
         #close the connection if there is one before
         if($this->con)
@@ -66,12 +155,12 @@ class Database
         $this->con = mysqli_connect($this->server, $this->username, $this->password);
 
         #throw exception if connection fails.
-        if(!$this->checkConnection()) {
+        if(!$this->connected()) {
             throw new Exception('Connection Failed.');
         }
     }
 
-    private function checkConnection()
+    private function connected()
     {
         if($this->con)
         {
@@ -79,6 +168,7 @@ class Database
         }
         return true;
     }
+
 
     /** add a picture
      */
