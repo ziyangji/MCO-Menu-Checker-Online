@@ -140,34 +140,34 @@ class Database
 
     }
 
-    /** returns whether the user is connect to its account
-     @return server's address
-     */
-    public function connect()
-    {
-        #close the connection if there is one before
-        if($this->con)
-        {
-            mysqli_close($this->con);
-        }
+//    /** returns whether the user is connect to its account
+//     @return server's address
+//     */
+//    public function connect()
+//    {
+//        #close the connection if there is one before
+//        if($this->con)
+//        {
+//            mysqli_close($this->con);
+//        }
+//
+//        #reconnect to mysql
+//        $this->con = mysqli_connect($this->server, $this->username, $this->password);
+//
+//        #throw exception if connection fails.
+//        if(!$this->connected()) {
+//            throw new Exception('Connection Failed.');
+//        }
+//    }
 
-        #reconnect to mysql
-        $this->con = mysqli_connect($this->server, $this->username, $this->password);
-
-        #throw exception if connection fails.
-        if(!$this->connected()) {
-            throw new Exception('Connection Failed.');
-        }
-    }
-
-    private function connected()
-    {
-        if($this->con)
-        {
-            return false;
-        }
-        return true;
-    }
+//    private function connected()
+//    {
+//        if($this->con)
+//        {
+//            return false;
+//        }
+//        return true;
+//    }
 
 
     /** add a picture
@@ -180,7 +180,7 @@ class Database
     /** get a picture
      * return null if there is an error
      */
-    public function getMenu($rest, $time, $today=true, $date=null)
+    public function getMenu($restaurant, $time, $today=true, $date=null)
     {
 
         if(!is_bool($today))
