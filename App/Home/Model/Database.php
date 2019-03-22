@@ -12,7 +12,6 @@ class Database
     private $username; #database username
     private $password; #password of username
     private $date;
-    private $con;
     
     /** Database construction
         @param server The server's address, in form of ip:port
@@ -25,7 +24,6 @@ class Database
         $this->server = $server;
         $this->username = $username;
         $this->password = $password;
-        $this->connect();
         $this->updateDate();
 
     }
@@ -51,6 +49,8 @@ class Database
     {
         #update date
         $this->date = date('Y_m_d');
+
+        #TODO:check if database for today already exists
 
         #create new database for new date
         $con = mysqli_connect($this->server, $this->username, $this->password);
@@ -172,12 +172,24 @@ class Database
 
     /** add a picture
      */
-    public function addPic()
+    public function addPic($restaurant, $pic_name, $pic_addr)
     {
-        pass;
+        $con = mysqli_connect($this->server, $this->username, $this->password, $this->date);
+        if(!$con)
+        {
+            throw new Exception('Connection Failed.');
+        }
+
+        $sql = "INSERT INTO {$restaurant} (pic_name, pic_addr) VALUES ({$pic_name}, {$pic_addr})";
+        if(!mysqli_query($con, $sql))
+        {
+            throw new Exception("Error creating table: " . mysqli_error($con));
+        }
+
+        $con->close();
     }
 
-    /** get a picture
+    /** get a picture address list
      * return null if there is an error
      */
     public function getMenu($restaurant, $time, $today=true, $date=null)
@@ -196,6 +208,13 @@ class Database
         {
             #error
             #date should not be empty when checking other days' menu
+            return null;
+        }
+
+        if($time != "breakfast" && $time != "lunch" && $time != "dinner")
+        {
+            #error
+            #time should be one of breakfast, lunch, or dinner.
             return null;
         }
 
