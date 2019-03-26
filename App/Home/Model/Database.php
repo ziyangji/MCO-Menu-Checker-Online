@@ -28,6 +28,12 @@ class Database
 
     }
 
+
+    private function isDate($inDate)
+    {
+        return preg_match("/\d{2}_\d{2}_\d{2}/");
+    }
+
     /** returns server's address
         @return server's address
      */
@@ -44,15 +50,28 @@ class Database
         return $this->date;
     }
 
-    # also updates database
-    public function updateDate()
+    # update the date and also create a new database if the date is new
+    public function updateDate($inDate = null)
     {
         #update date
-        $this->date = date('Y_m_d');
+        if ($inDate != null && isDate($inDate))
+        {
+            $this->date = $inDate;
+        }
+        else
+        {
+            $this->date = date('Y_m_d');
+        }
 
-        #TODO:check if database for today already exists
+        #check if database for the date already exists
+        $con = mysqli_connect($this->server, $this->username, $this->password, $this->date);
+        if($con)
+        {
+            #if the date already exists, return the function and do not create new database
+            return;
+        }
 
-        #create new database for new date
+        #otherwise, create new database for new date
         $con = mysqli_connect($this->server, $this->username, $this->password);
         if(!$con)
         {
