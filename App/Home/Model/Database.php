@@ -31,7 +31,7 @@ class Database
 
     private function isDate($inDate)
     {
-        return preg_match("/\d{2}_\d{2}_\d{2}/");
+        return preg_match("/\d{2}_\d{2}_\d{2}/", $inDate);
     }
 
     /** returns server's address
@@ -54,7 +54,7 @@ class Database
     public function updateDate($inDate = null)
     {
         #update date
-        if ($inDate != null && isDate($inDate))
+        if ($inDate != null && $this->isDate($inDate))
         {
             $this->date = $inDate;
         }
