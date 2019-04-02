@@ -1,0 +1,21 @@
+File: data_fetch.py
+
+This program is designed to collect raw data used by our project. 
+
+Data are collected from official website of dining services. This website provides 
+information of only 3 dining halls, Commons, Sage and Barh. We will find other ways to 
+collect information of Blitman dining hall.
+
+This script aims to collect data for breakfast, lunch and dinner for each day.
+
+One dining hall is represented by a dictionary. 
+The key of the dictionary is the name of dish. The value is a list of string. The list 
+has length of three and contains information of meal, course and cal corresponding to 
+the current dish.
+
+This file will package data into JSON and save into database.
+
+Contributors:
+Haolun Zhang: data collection, html analysis, comments, debug and maintenance
+Xinyu Gu: data checking, data packaging, Negotiation with other group members, debug and 
+maintenance
