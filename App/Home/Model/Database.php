@@ -18,6 +18,7 @@ class Database
         @param username user's username in the server
         @param password user's password in the server
         @requires server, username, and password != null
+        @throw RunTimeException if not connect to database
      */
     function __construct($server, $username, $password)
     {
@@ -27,7 +28,12 @@ class Database
         $this->updateDate();
 
     }
-
+    
+    /**
+        @param inDate A date
+        @require inDate is not null
+        @return whether it is a valid date
+     */
 
     private function isDate($inDate)
     {
@@ -43,7 +49,7 @@ class Database
     }
 
     /** returns today's date
-     @return date
+        @return date
      */
     public function getDate()
     {
@@ -68,6 +74,7 @@ class Database
         if($con)
         {
             #if the date already exists, return the function and do not create new database
+            $con->close();
             return;
         }
 
