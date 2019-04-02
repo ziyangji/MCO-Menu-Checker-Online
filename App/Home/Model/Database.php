@@ -243,15 +243,25 @@ class Database
         }
 
         $con = mysqli_connect($this->server, $this->username, $this->password, $this->date);
+        if(!$con)
+        {
+            throw new Exception('Connection Failed.');
+        }
 
+        #get data from database
+        $sql = "SELECT id, pic_name, pic_addr FROM {$restaurant}_{$time}";
+        $query = mysqli_query($con, $sql);
 
-        #TODO: mysql statement
-
-        ##TODO: get data from database
+        #reorgnize data and return
+        $result = array();
+        while ($row = mysqli_fetch_assoc($query))
+        {
+            $result[] = $row;
+        }
 
         $con->close();
 
-        return null;
+        return json_encode($result);
     }
 
 }
