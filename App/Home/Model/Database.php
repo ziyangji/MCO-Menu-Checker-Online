@@ -135,21 +135,21 @@ class Database
         }
 
         #create table for barh_breakfast
-        $sql = "CREATE TABLE sage_breakfast(id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, pic_name VARCHAR(30) NOT NULL, pic_addr VARCHAR(30) NOT NULL,)";
+        $sql = "CREATE TABLE barh_breakfast(id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, pic_name VARCHAR(30) NOT NULL, pic_addr VARCHAR(30) NOT NULL,)";
         if(!mysqli_query($con, $sql))
         {
             throw new Exception("Error creating table: " . mysqli_error($con));
         }
 
         #create table for barh_lunch
-        $sql = "CREATE TABLE sage_lunch(id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, pic_name VARCHAR(30) NOT NULL, pic_addr VARCHAR(30) NOT NULL,)";
+        $sql = "CREATE TABLE barh_lunch(id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, pic_name VARCHAR(30) NOT NULL, pic_addr VARCHAR(30) NOT NULL,)";
         if(!mysqli_query($con, $sql))
         {
             throw new Exception("Error creating table: " . mysqli_error($con));
         }
 
         #create table for barh_dinner
-        $sql = "CREATE TABLE sage_dinner(id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, pic_name VARCHAR(30) NOT NULL, pic_addr VARCHAR(30) NOT NULL,)";
+        $sql = "CREATE TABLE barh_dinner(id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, pic_name VARCHAR(30) NOT NULL, pic_addr VARCHAR(30) NOT NULL,)";
         if(!mysqli_query($con, $sql))
         {
             throw new Exception("Error creating table: " . mysqli_error($con));
@@ -190,16 +190,31 @@ class Database
 
 
     /** add a picture
+     * return false if restaurant or time is not valid
      */
-    public function addPic($restaurant, $pic_name, $pic_addr)
+    public function addPic($restaurant, $time, $pic_name, $pic_addr)
     {
+        if ($restaurant != "commons" && $restaurant != "sage" && $restaurant != "barh")
+        {
+            #error
+            #restaurant should be one of commons, sage, or barh
+            return false;
+        }
+
+        if($time != "breakfast" && $time != "lunch" && $time != "dinner")
+        {
+            #error
+            #time should be one of breakfast, lunch, or dinner.
+            return false;
+        }
+
         $con = mysqli_connect($this->server, $this->username, $this->password, $this->date);
         if(!$con)
         {
             throw new Exception('Connection Failed.');
         }
 
-        $sql = "INSERT INTO {$restaurant} (pic_name, pic_addr) VALUES ({$pic_name}, {$pic_addr})";
+        $sql = "INSERT INTO {$restaurant}_{$time} (pic_name, pic_addr) VALUES ({$pic_name}, {$pic_addr})";
         if(!mysqli_query($con, $sql))
         {
             throw new Exception("Error creating table: " . mysqli_error($con));
@@ -208,25 +223,15 @@ class Database
         $con->close();
     }
 
-    /** get a picture address list
+    /** get a picture address list of today
      * return null if there is an error
      */
-    public function getMenu($restaurant, $time, $today=true, $date=null)
+    public function getMenu($restaurant, $time)
     {
-
-        if(!is_bool($today))
-            #error
-            #the input $today should be a boolean
-            return null;
-
-        ##update the required date
-        if($today)
-            $date = $this->date;
-
-        if($date == null)
+        if ($restaurant != "commons" && $restaurant != "sage" && $restaurant != "barh")
         {
             #error
-            #date should not be empty when checking other days' menu
+            #restaurant should be one of commons, sage, or barh
             return null;
         }
 
@@ -237,11 +242,14 @@ class Database
             return null;
         }
 
-        #TODO: check date format
+        $con = mysqli_connect($this->server, $this->username, $this->password, $this->date);
+
 
         #TODO: mysql statement
 
-        ##TODO: get data from  database
+        ##TODO: get data from database
+
+        $con->close();
 
         return null;
     }
