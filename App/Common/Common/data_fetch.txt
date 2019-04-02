@@ -8,12 +8,12 @@ collect information of Blitman dining hall.
 
 This script aims to collect data for breakfast, lunch and dinner for each day.
 
-One dining hall is a class object. 
-One dining hall has three dictionaries. 
-One dictionary represents one meal. The key of the dictionary is each serving window. The
-value contains information of all dishes. 
+One dining hall is represented by a dictionary. 
+The key of the dictionary is the name of dish. The value is a list of string. The list 
+has length of three and contains information of meal, course and cal corresponding to 
+the current dish.
 
-This file will package data into json and save into database.
+This file will package data into JSON and save into database.
 
 Contributors:
 Haolun Zhang: data collection, html analysis, comments, debug and maintenance
