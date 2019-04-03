@@ -1,7 +1,6 @@
 import sys
 import json
-import urllib.request
-
+import requests
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
@@ -17,9 +16,13 @@ class Fetcher:
     url (str): link to the corresponding menu page of the target dinning hall
   '''
 
-    def __init__(self, target,breakfast,lunch,dinner):
-        dining_hall = {}
-        
+    def __init__(self, target):
+        self.dining_hall = {}
+        self.currentwindow = ""
+        self.currentitem = ""
+        self.itemindicator = ""
+        self.unknownstring = ""
+        self.haveagreatday = 0
         '''
     Args:
       target (str): Shortened name of the dinning hall
@@ -36,26 +39,57 @@ class Fetcher:
             self.url = 'https://menus.sodexomyway.com/BiteMenu/Menu?menuId=15285&locationId=76929002&whereami=http://rensselaerdining.com/dining-near-me/russell-sage'
         elif target.lower() == 'barh':
             self.url = 'https://menus.sodexomyway.com/BiteMenu/Menu?menuId=667&locationId=76929003&whereami=http://rensselaerdining.com/dining-near-me/barh-dining-hall'
-        elif target.lower() == 'blm':
-            self.url = ''  # blitman commons is currently not on RPI's official menu
+        # elif target.lower() == 'blm':
+        #     self.url = ''  # blitman commons is currently not on RPI's official menu
         else:
             raise ValueError('Target dinning hall ({target}) is not valid')
         self.target = target
         self.driver = webdriver.Chrome()
 
-    def crawl(self,breakfast,lunch,dinner):
+    def getMeal(self, meal, text):
+        self.unknownstring = ""
+        # window or item
+        if self.itemindicator == 0:
+            #Skip the HAVE A GREAT DAY window
+            if text == "HAVE A GREAT DAY!":
+                self.haveagreatday = 1
+                return
+            elif self.haveagreatday == 1:
+                self.haveagreatday = 0
+                return
+
+            #Normal windows
+            if self.unknownstring == "":
+                self.unknownstring = text
+                return
+            else:
+                if text[0].isdigit():
+                    self.currentitem = self.unknownstring
+                    cal = text
+                    self.dining_hall[self.currentwindow].append((self.currentitem, cal))
+                else:
+                    self.currentwindow = self.unknownstring
+                    self.currentitem = text
+                    self.itemindicator = 1
+
+        # itemcal
+        elif self.itemindicator == 1:
+            currentcal = text
+            self.dining_hall[self.currentitem] = [meal, self.currentwindow, currentcal]
+            self.itemindicator = 0
+
+
+    def crawl(self):
+        r = requests.get(self.url)
+        html = r.text.encode(r.encoding).decode()
+        soup = BeautifulSoup(html, 'html.parser')
 
         # Raises:
         #   raise RuntimeError if there is no data for the target dinning hall
         # Returns:
         #   Packed json file with information from the target dinning hall
-
-        currentitem = ""
-        currentwindow = ""
-        currentcal = ""
-        temp = ""
         mealindicator = -1
-        itemindicator = 0
+
         for element in soup.find_all("div"):
             text = element.get_text().strip()
 
@@ -73,93 +107,33 @@ class Fetcher:
                 mealindicator = 2
                 continue
 
-             #Breakfast
             if mealindicator == 0:
-                #window or item
-                if itemindicator == 0:
-                    if temp == "":
-                        temp = text
-                        continue
-
-                    else:
-                        if text[0].isdigit():
-                            currentitem = temp
-                            currentcal = text
-                            breakfast[currentwindow].append((currentitem,currentcal))
-                        else:
-                            currentwindow = temp
-                            currentitem = text
-                            itemindicator = 1
-
-                #itemcal
-                elif itemindicator == 1:
-                    currentcal = text
-                    dining_hall[currentitem] = ["BREAKFAST", currentwindow, currentcal]
-                    itemindicator = 0
-
-            #Lunch
+                self.getMeal("BREAKFAST", text)
             elif mealindicator == 1:
-                # window or item
-                if itemindicator == 0:
-                    if temp == "":
-                        temp = text
-                    else:
-                        if text[0].isdigit():
-                            currentitem = temp
-                            currentcal = text
-                            lunch[currentwindow].append((currentitem, currentcal))
-                        else:
-                            currentwindow = temp
-                            currentitem = text
-                            lunch[currentwindow] = []
-                            itemindicator = 1
-                # itemcal
-                elif itemindicator == 1:
-                    currentcal = text
-                    lunch[currentwindow].append((currentitem, currentcal))
-                    itemindicator = 0
-            #Dinner
+                self.getMeal("LUNCH", text)
             elif mealindicator == 2:
-                # window or item
-                if itemindicator == 0:
-                    if temp == "":
-                        temp = text
-                    else:
-                        if text[0].isdigit():
-                            currentitem = temp
-                            currentcal = text
-                            dinner[currentwindow].append((currentitem, currentcal))
-                        else:
-                            currentwindow = temp
-                            currentitem = text
-                            dinner[currentwindow] = []
-                            itemindicator = 1
-                # itemcal
-                elif itemindicator == 1:
-                    currentcal = text
-                    dinner[currentwindow].append((currentitem, currentcal))
-                    itemindicator = 0
-
-
+                self.getMeal("DINNER", text)
 
 if __name__ == '__main__':
-    html = urllib.request.urlopen('https://menus.sodexomyway.com/BiteMenu/Menu?menuId=15465&locationId=76929001&whereami=http://rensselaerdining.com/dining-near-me/commons-dining-hall').read()
-    soup = BeautifulSoup(html, 'html.parser')
-
-
+    cms = Fetcher("cms")
+    cms.crawl()
+    sage = Fetcher("cms")
+    sage.crawl()
+    barh = Fetcher("cms")
+    barh.crawl()
 
 
         # Load the data that PHP sent us
-        try:
-          data = json.loads(sys.argv[1])
-        except:
-          print("ERROR")
-          sys.exit(1)
-
-        Generate some data to send to PHP
-        result = {'res': '', 'menu': '', 'img': ''}
-
-        Send it to stdout (to PHP)
-        print(json.dumps(result))
+        # try:
+        #   data = json.loads(sys.argv[1])
+        # except:
+        #   print("ERROR")
+        #   sys.exit(1)
+        #
+        # Generate some data to send to PHP
+        # result = {'res': '', 'menu': '', 'img': ''}
+        #
+        # Send it to stdout (to PHP)
+        # print(json.dumps(result))
 
 
