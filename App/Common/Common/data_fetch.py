@@ -22,7 +22,7 @@ class Fetcher:
         self.currentitem = ""
         self.unknownstring = ""
         self.haveagreatday = 0
-        self.StringOrLetter = false
+        self.StringOrLetter = False
         '''
     Args:
       target (str): Shortened name of the dinning hall
@@ -44,36 +44,46 @@ class Fetcher:
         else:
             raise ValueError('Target dinning hall ({target}) is not valid')
         self.target = target
-        self.driver = webdriver.Chrome()
+        #self.driver = webdriver.Chrome()
 
     def getMeal(self, meal, text, target):
+        # 我们当前不知道这是一个window或者一个菜品
         # itemindicator == 0 means window or an item
-        if self.StringOrLetter == true:
+        if self.StringOrLetter:
 
+            #跳过两句废话
             #Skip the HAVE A GREAT DAY
+            #第一句废话
             if text == "HAVE A GREAT DAY!":
                 self.haveagreatday = 1
                 return
+            #第二句废话
             elif self.haveagreatday == 1:
                 self.haveagreatday = 0
                 return
-
-            #window or an item
+            #存进一个string
             self.unknownstring = text
-            if text[0].isdigit() != true:
-                self.StringOrLetter = false
+            
+            #第二次到这里，发现上次的unknownstring是window名字，
+            #那么这次的就是菜品了,那么下次一定是卡路里
+            #这个操作判断是不是数字
+            if text[0].isdigit() != True:
+                self.StringOrLetter = False
                 self.currentwindow = self.unknownstring
                 self.currentitem = text
                 return
-
+            
+            #第二次到这里，发现上次的是菜品，那么这次就是卡路里了
             else:
                 self.currentitem = self.unknownstring
                 self.dining_hall[self.currentitem] = [meal, self.currentwindow, text, target]
                 return
+            
+        #如果上次一定是菜品，那么现在一定是卡路里
         else:
             self.currentitem = self.unknownstring
             self.dining_hall[self.currentitem] = [meal, self.currentwindow, text, target]
-            self.StringOrLetter = true
+            self.StringOrLetter = True
             return
 
 
@@ -91,28 +101,42 @@ class Fetcher:
 
         for element in soup.find_all("div"):
             text = element.get_text().strip()
+            text.replace("\n","")
 
+            if text == "\n" or text == "\r" or text == None or text == "":
+                continue
+                
+            #我这里print了一天的所有数据
+            
+            if mealindicator!=-1:
+                print(text)
+                
+            #他每一个BREAKFAST LUNCH DINNER下面都多了一个250cal，别的没什么
+            #如果我们找到了早餐
             if text == "BREAKFAST":
+                #如果我们到了第二天的早餐 停止
                 if mealindicator == 2:
                     return
                 mealindicator = 0
                 continue
-
+            #如果我们找到了午餐               
             if text == "LUNCH":
                 mealindicator = 1
                 continue
-
+            #如果我们找到了晚餐
             if text == "DINNER":
                 mealindicator = 2
                 continue
-
+            #早餐
             if mealindicator == 0:
                 self.getMeal("BREAKFAST", text, target)
+            #午餐
             elif mealindicator == 1:
                 self.getMeal("LUNCH", text, target)
+            #晚餐
             elif mealindicator == 2:
                 self.getMeal("DINNER", text, target)
-            print(self.dining_hall)
+            #print(self.dining_hall)
 
 if __name__ == '__main__':
     cms = Fetcher("cms")
