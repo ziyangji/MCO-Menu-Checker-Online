@@ -56,6 +56,12 @@ class Database
         return $this->date;
     }
 
+    /** update date function
+        The stuff need to update dates to the specific date(date u want access) to get access to
+        this date's data.
+        @modify date, database
+        @effects update the date and create a new database if the date is not in database
+     */
     # update the date and also create a new database if the date is new
     public function updateDate($inDate = null)
     {
@@ -197,7 +203,15 @@ class Database
 
 
     /** add a picture
-     * return false if restaurant or time is not valid
+        @restaurant the location(restaurant's name) of picture  (e.g. "commons" or "sage" or "barh")
+        @time       the time(when it appeared) of the picture (e.g. "breakfast", "lunch", "dinner")
+        @pic_name   the picture's name
+        @pic_addr   the picture's address
+     
+        @return false if restaurant or time is not valid
+        @return true if success
+     
+        @raise exception if it cannot connect to the server
      */
     public function addPic($restaurant, $time, $pic_name, $pic_addr)
     {
@@ -228,10 +242,17 @@ class Database
         }
 
         $con->close();
+        return true;
     }
 
     /** get a picture address list of today
-     * return null if there is an error
+        @restaurant the location(restaurant's name) of picture  (e.g. "commons" or "sage" or "barh")
+        @time       the time(when it appeared) of the picture (e.g. "breakfast", "lunch", "dinner")
+     
+        @return null if restaurant and time are not valid.
+        @return a json file contains id, pic_name, and pic_addr if it works.
+     
+        @throws exception if it cannot connect to the server
      */
     public function getMenu($restaurant, $time)
     {
