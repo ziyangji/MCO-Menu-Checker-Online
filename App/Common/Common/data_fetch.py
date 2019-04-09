@@ -20,9 +20,9 @@ class Fetcher:
         self.dining_hall = {}
         self.currentwindow = ""
         self.currentitem = ""
-        self.itemindicator = ""
         self.unknownstring = ""
         self.haveagreatday = 0
+        self.StringOrLetter = false
         '''
     Args:
       target (str): Shortened name of the dinning hall
@@ -46,11 +46,11 @@ class Fetcher:
         self.target = target
         self.driver = webdriver.Chrome()
 
-    def getMeal(self, meal, text):
-        self.unknownstring = ""
-        # window or item
-        if self.itemindicator == 0:
-            #Skip the HAVE A GREAT DAY window
+    def getMeal(self, meal, text, target):
+        # itemindicator == 0 means window or an item
+        if self.StringOrLetter == true:
+
+            #Skip the HAVE A GREAT DAY
             if text == "HAVE A GREAT DAY!":
                 self.haveagreatday = 1
                 return
@@ -58,28 +58,27 @@ class Fetcher:
                 self.haveagreatday = 0
                 return
 
-            #Normal windows
-            if self.unknownstring == "":
-                self.unknownstring = text
+            #window or an item
+            self.unknownstring = text
+            if text[0].isdigit() != true:
+                self.StringOrLetter = false
+                self.currentwindow = self.unknownstring
+                self.currentitem = text
                 return
+
             else:
-                if text[0].isdigit():
-                    self.currentitem = self.unknownstring
-                    cal = text
-                    self.dining_hall[self.currentwindow].append((self.currentitem, cal))
-                else:
-                    self.currentwindow = self.unknownstring
-                    self.currentitem = text
-                    self.itemindicator = 1
-
-        # itemcal
-        elif self.itemindicator == 1:
-            currentcal = text
-            self.dining_hall[self.currentitem] = [meal, self.currentwindow, currentcal]
-            self.itemindicator = 0
+                self.currentitem = self.unknownstring
+                self.dining_hall[self.currentitem] = [meal, self.currentwindow, text, target]
+                return
+        else:
+            self.currentitem = self.unknownstring
+            self.dining_hall[self.currentitem] = [meal, self.currentwindow, text, target]
+            self.StringOrLetter = true
+            return
 
 
-    def crawl(self):
+
+    def crawl(self, target):
         r = requests.get(self.url)
         html = r.text.encode(r.encoding).decode()
         soup = BeautifulSoup(html, 'html.parser')
@@ -108,19 +107,20 @@ class Fetcher:
                 continue
 
             if mealindicator == 0:
-                self.getMeal("BREAKFAST", text)
+                self.getMeal("BREAKFAST", text, target)
             elif mealindicator == 1:
-                self.getMeal("LUNCH", text)
+                self.getMeal("LUNCH", text, target)
             elif mealindicator == 2:
-                self.getMeal("DINNER", text)
+                self.getMeal("DINNER", text, target)
+            print(self.dining_hall)
 
 if __name__ == '__main__':
     cms = Fetcher("cms")
-    cms.crawl()
-    sage = Fetcher("cms")
-    sage.crawl()
-    barh = Fetcher("cms")
-    barh.crawl()
+    cms.crawl("cms")
+    #sage = Fetcher("sage")
+    #sage.crawl("sage")
+    #barh = Fetcher("barh")
+    #barh.crawl("barh")
 
 
         # Load the data that PHP sent us
