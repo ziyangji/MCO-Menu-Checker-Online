@@ -5,15 +5,15 @@ class IndexController extends CommonController
 {
     public function index()
     {
+        $this->redirect('Index/home');
         $content = array(
             0 => 'Menu Checker',
             1 => '\tAn online preview of the RPI dining hall menus.\n\tStudents and dinning hall staffs will be able to upload both text descriptions and pictures of dishes provided by each of the dinning halls.\n\tThe menus will be updated "mealy" by users, and we are considering to collaborate with the dinning halls to make it easier.'
         );
         
         $this->assign('content', $content);
-        
-//        menu template debug
-//        $this->redirect('Index/menu', 'loading menu...');
+
+        $this->assign('hh', arrange());
 
         $this->display();
     }

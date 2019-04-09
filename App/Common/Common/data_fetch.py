@@ -9,7 +9,6 @@ from bs4 import BeautifulSoup
 
 
 class Fetcher:
-<<<<<<< HEAD
 	'''
 	The crawler class used for retrieving information from sodexo's menu page
 	Note:
@@ -86,8 +85,7 @@ result = {'res': '', 'menu': '', 'img': ''}
 
 # Send it to stdout (to PHP)
 print(json.dumps(result))
-=======
-    ''' The crawler class used for retrieving information from sodexo's menu page
+  ''' The crawler class used for retrieving information from sodexo's menu page
   Note:
     Blitman Commons is not yet included in sodexo's page. The class should throw an error if blm is at request
 
@@ -240,5 +238,3 @@ if __name__ == '__main__':
         Send it to stdout (to PHP)
         print(json.dumps(result))
 
-
->>>>>>> e6550720d5913b36b347360e6f1db01233eba952
