@@ -1,0 +1,6 @@
+self.dining_hall{item_name1: "BREAKFAST"."WINDOW1","CAL","DiningHall_Name"}
+	      {item_name2: "BREAKFAST"."WINDOW1","CAL","DiningHall_Name"}
+	      {item_name3: "BREAKFAST"."WINDOW2","CAL","DiningHall_Name"}
+                      {item_name4: "BREAKFAST"."WINDOW2","CAL","DiningHall_Name"}
+	      {item_name5: "LUNCH"."WINDOW1","CAL","DiningHall_Name"}
+	      {item_name6: "DINNER"."WINDOW1","CAL","DiningHall_Name"}
