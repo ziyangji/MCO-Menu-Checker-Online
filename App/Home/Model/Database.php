@@ -8,10 +8,31 @@
 
 class Database
 {
+
+    /*
+     * usage:
+     * suppose we have an Database instance db
+     * 1.Get today's Sage Dinner Menu in json form
+     * db.updateDate()
+     * result_in_json = db.getMenu("sage", "dinner")
+     *
+     * 2.store a picture of Commons Lunch in 2019.4.12
+     * db.updateDate("2019_04_12")
+     * db.addPic("commons", "lunch", picName_in_String, picAddress_in_String)
+     *
+     * 3.get Barh Breakfast Menu on 2019.4.14
+     * db.updateDate("2019_04_14")
+     * db.getMenu("barh", "breakfast")
+     *
+     * Notice that we have to first store picture of a day before we getMenu of that day.
+     */
+
+
+
     private $server; #"localhost" is fine
     private $username; #database username
     private $password; #password of username
-    private $date;
+    private $date; #the current manipulating date of database
     
     /** Database construction
         @param server The server's address, in form of ip:port
