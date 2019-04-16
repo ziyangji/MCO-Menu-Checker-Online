@@ -1,7 +1,7 @@
 import json
 
 '''
-output
+output in comment
 '''
 
 # transfer array into json using json.dumps
@@ -22,4 +22,19 @@ print(json.dumps({'a': 'xxx', 'b': 7}, sort_keys = True, indent = 4, separators 
     "a": "xxx",
     "b": 7
 }
+'''
+
+
+'''
+NOTE:
+
+[Python] -> {JSON}
+
+[dict] -> {object}
+[list,tuple] -> {array}
+[str,unicode] -> {string}
+[int,long,float] -> {number}
+[True] -> {true}
+[False] -> {false}
+[None] -> {null}
 '''
