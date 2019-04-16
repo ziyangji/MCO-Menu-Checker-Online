@@ -14,6 +14,7 @@ class Crawler:
 
     Attributes:
         url (str): link to the corresponding menu page of the target dinning hall
+
     '''
 
     def __init__(self, target):
@@ -108,7 +109,6 @@ class Crawler:
         while i < len(dinner_dishes):
             print(f"{dinner_dishes[i].strip()} -> {dinner_cals[i].strip()}")
             i += 1
-
 
 
 if __name__ == '__main__':

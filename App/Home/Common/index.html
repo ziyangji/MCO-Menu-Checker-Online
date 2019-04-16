@@ -1,1 +1,43 @@
  
+function htmlEncode ( str ) {
+  var ele = document.createElement('span');
+  ele.appendChild( document.createTextNode( str ) );
+  return ele.innerHTML;
+}
+//解析 
+function htmlDecode ( str ) {
+  var ele = document.createElement('span');
+  ele.innerHTML = str;
+  return ele.textContent;
+}
+
+function htmlEncodeJQ ( str ) {
+    return $('<span/>').text( str ).html();
+}
+ 
+function htmlDecodeJQ ( str ) {
+    return $('<span/>').html( str ).text();
+}
+
+"
+
+function htmlEncode ( int ) {
+  var ele = document.createElement('length');
+  ele.appendChild( document.createTextNode( int) );
+  return ele.innerHTML;
+}
+//解析 
+function htmlDecode ( int ) {
+  var ele = document.createElement('length');
+  ele.innerHTML = int;
+  return ele.textContent;
+}
+
+function htmlEncodeJQ ( int ) {
+    return $('<length/>').text( int ).html();
+}
+ 
+function htmlDecodeJQ ( str ) {
+    return $('<length/>').html( int ).text();
+}
+"
