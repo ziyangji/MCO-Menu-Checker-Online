@@ -1,240 +1,118 @@
 import sys
 import json
-import urllib.request
 
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-
-from bs4 import BeautifulSoup
+from lxml import html
+from datetime import datetime
+import requests
 
 
-class Fetcher:
-	'''
-	The crawler class used for retrieving information from sodexo's menu page
-	Note:
-		Blitman Commons is not yet included in sodexo's page. The class should throw an error if blm is at request
-
-	Attributes:
-		url (str): link to the corresponding menu page of the target dinning hall
-	'''
-
-	def __init__(self, target):
-		'''
-		Args:
-			target (str): Shortened name of the dinning hall
-
-		Returns:
-			None
-
-		Raises:
-			ValueError: If `target` is a not expected dinning hall name
-		'''
-		if target.lower() == 'cms':
-			self.url = 'https://menus.sodexomyway.com/BiteMenu/Menu?menuId=15465&locationId=76929001&whereami=http://rensselaerdining.com/dining-near-me/commons-dining-hall'
-		elif target.lower() == 'sage':
-			self.url = 'https://menus.sodexomyway.com/BiteMenu/Menu?menuId=15285&locationId=76929002&whereami=http://rensselaerdining.com/dining-near-me/russell-sage'
-		elif target.lower() == 'barh':
-			self.url = 'https://menus.sodexomyway.com/BiteMenu/Menu?menuId=667&locationId=76929003&whereami=http://rensselaerdining.com/dining-near-me/barh-dining-hall'
-		elif target.lower() == 'blm':
-			self.url = ''  # blitman commons is currently not on RPI's official menu
-		else:
-			raise ValueError(f'Target dinning hall ({target}) is not valid')
-		self.target = target
-		self.driver = webdriver.Chrome()
-
-	def crawl(self):
-		'''
-		Raises:
-			raise RuntimeError if there is no data for the target dinning hall
-		Returns:
-			Packed json file with information from the target dinning hall
-		'''
-		
-		# open url			
-		self.driver.get(self.url)
-		
-		source_code = self.driver.find_element_by_xpath("//*").get_attribute("outerHTML")
-		
-		soup = BeautifulSoup(source_code, 'html.parser')
-		
-		self.menu = {
-			"breakfast": None,
-			"lunch": None,
-			"dinner": None
-		}		
-		
-		self.menu["breakfast"] = soup.find_all(class_="breakfast")
-		self.menu["lunch"] = soup.find_all(class_="lunch")
-		self.menu["dinner"] = soup.find_all(class_="dinner")
-		
-		# TODO: Structure out the data in self.menu and return
-		pass
-
-
-# Load the data that PHP sent us
-try:
-	data = json.loads(sys.argv[1])
-except json.JSONDecodeError:
-	print("ERROR decoding JSON")
-	sys.exit(1)
-
-
-
-# Generate some data to send to PHP
-result = {'res': '', 'menu': '', 'img': ''}
-
-# Send it to stdout (to PHP)
-print(json.dumps(result))
-  ''' The crawler class used for retrieving information from sodexo's menu page
-  Note:
-    Blitman Commons is not yet included in sodexo's page. The class should throw an error if blm is at request
-
-  Attributes:
-    url (str): link to the corresponding menu page of the target dinning hall
-  '''
-
-    def __init__(self, target,breakfast,lunch,dinner):
-        dining_hall = {}
-        
-        '''
-    Args:
-      target (str): Shortened name of the dinning hall
-
-    Returns:
-      None
-
-    Raises:
-      ValueError: If `target` is a not expected dinning hall name
+class Crawler:
     '''
+    The crawler class used for retrieving information from sodexo's menu page
+    Note:
+        Blitman Commons is not yet included in sodexo's page. The class should throw an error if blm is at request
+
+    Attributes:
+        url (str): link to the corresponding menu page of the target dinning hall
+
+    '''
+
+    def __init__(self, target):
         if target.lower() == 'cms':
-            self.url = 'https://menus.sodexomyway.com/BiteMenu/Menu?menuId=15465&locationId=76929001&whereami=http://rensselaerdining.com/dining-near-me/commons-dining-hall'
+            self.url = 'https://menus.sodexomyway.com/BiteMenu/Menu?menuId=15465&locationId=76929001&whereami=http:' \
+                       '//rensselaerdining.com/dining-near-me/commons-dining-hall'
         elif target.lower() == 'sage':
-            self.url = 'https://menus.sodexomyway.com/BiteMenu/Menu?menuId=15285&locationId=76929002&whereami=http://rensselaerdining.com/dining-near-me/russell-sage'
+            self.url = 'https://menus.sodexomyway.com/BiteMenu/Menu?menuId=15285&locationId=76929002&whereami=http:' \
+                       '//rensselaerdining.com/dining-near-me/russell-sage'
         elif target.lower() == 'barh':
-            self.url = 'https://menus.sodexomyway.com/BiteMenu/Menu?menuId=667&locationId=76929003&whereami=http://rensselaerdining.com/dining-near-me/barh-dining-hall'
+            self.url = 'https://menus.sodexomyway.com/BiteMenu/Menu?menuId=667&locationId=76929003&whereami=http:' \
+                       '//rensselaerdining.com/dining-near-me/barh-dining-hall'
         elif target.lower() == 'blm':
-            self.url = ''  # blitman commons is currently not on RPI's official menu
+            raise ValueError(f'Blitman Commons is currently not on Sodexo\'s official website')
         else:
-            raise ValueError('Target dinning hall ({target}) is not valid')
+            raise ValueError(f'Target dinning hall ({target}) is not valid')
+
         self.target = target
-        self.driver = webdriver.Chrome()
 
-    def crawl(self,breakfast,lunch,dinner):
+    def crawl(self):
+        '''
+        The crawler function that uses request to get html source, and use lxml.html to build element tree
+        '''
+        tree = html.fromstring(requests.get(self.url).content)
+        
+        
+        
+        
+        
+        
+        #这个是当天日期
+        #current date
+        date = int(str(datetime.today()).split()[0].split('-')[-1])
+        
+        
+        
+        
+        
+        
+        
+        # BREAKFAST:
+        # use xpath to retrieve breakfast name
+        breakfast_dishes = tree.xpath(
+            './body/div[@class="my-app"]/div/div[@class="bottom-half"]/div[@class="main-content"]/div[@id="bite-menu"]/div[@id="menuid-{:d}-day"]/div[@class="accordion"]/div[contains(@class, "breakfast")]/div[contains(@class, "accordion-panel")]/div[@class="bite-menu-item"]/div[@class="col-xs-9"]/a[contains(@class, "get-nutritioncalculator")]/text()'.format(date))
+        # use xpath to retrieve breakfast calories (the first cal data is invalid -> use slice to get rid of it)
+        breakfast_cals = tree.xpath(
+            './body/div[@class="my-app"]/div/div[@class="bottom-half"]/div[@class="main-content"]/div[@id="bite-menu"]/div[@id="menuid-{:d}-day"]/div[@class="accordion"]/div[contains(@class, "breakfast")]/div[contains(@class, "accordion-panel")]/div[@class="bite-menu-item"]/div[contains(@class, "text-right")]/a/text()'.format(date))[
+                         1:]
 
-        # Raises:
-        #   raise RuntimeError if there is no data for the target dinning hall
-        # Returns:
-        #   Packed json file with information from the target dinning hall
+        # TODO: same logic for lunch and dinner, implement them here
+        # LUNCH:
+        lunch_dishes = tree.xpath(
+            './body/div[@class="my-app"]/div/div[@class="bottom-half"]/div[@class="main-content"]/div[@id="bite-menu"]/div[@id="menuid-{:d}-day"]/div[@class="accordion"]/div[contains(@class, "lunch")]/div[contains(@class, "accordion-panel")]/div[@class="bite-menu-item"]/div[@class="col-xs-9"]/a[contains(@class, "get-nutritioncalculator")]/text()'.format(date))
+        # use xpath to retrieve breakfast calories (the first cal data is invalid -> use slice to get rid of it)
+        lunch_cals = tree.xpath(
+            './body/div[@class="my-app"]/div/div[@class="bottom-half"]/div[@class="main-content"]/div[@id="bite-menu"]/div[@id="menuid-{:d}-day"]/div[@class="accordion"]/div[contains(@class, "lunch")]/div[contains(@class, "accordion-panel")]/div[@class="bite-menu-item"]/div[contains(@class, "text-right")]/a/text()'.format(date))[
+                         1:]
 
-        currentitem = ""
-        currentwindow = ""
-        currentcal = ""
-        temp = ""
-        mealindicator = -1
-        itemindicator = 0
-        for element in soup.find_all("div"):
-            text = element.get_text().strip()
+        # DINNER:
+        dinner_dishes = tree.xpath(
+            './body/div[@class="my-app"]/div/div[@class="bottom-half"]/div[@class="main-content"]/div[@id="bite-menu"]/div[@id="menuid-{:d}-day"]/div[@class="accordion"]/div[contains(@class, "dinner")]/div[contains(@class, "accordion-panel")]/div[@class="bite-menu-item"]/div[@class="col-xs-9"]/a[contains(@class, "get-nutritioncalculator")]/text()'.format(date))
+        # use xpath to retrieve breakfast calories (the first cal data is invalid -> use slice to get rid of it)
+        dinner_cals = tree.xpath(
+            './body/div[@class="my-app"]/div/div[@class="bottom-half"]/div[@class="main-content"]/div[@id="bite-menu"]/div[@id="menuid-{:d}-day"]/div[@class="accordion"]/div[contains(@class, "dinner")]/div[contains(@class, "accordion-panel")]/div[@class="bite-menu-item"]/div[contains(@class, "text-right")]/a/text()'.format(date))[
+                         1:]
 
-            if text == "BREAKFAST":
-                if mealindicator == 2:
-                    return
-                mealindicator = 0
-                continue
+        # TODO: pass data to php, print for debug uses
 
-            if text == "LUNCH":
-                mealindicator = 1
-                continue
+        # for d in breakfast_dishes:
+        #   print(d, end='\t')
+        # print()
+        # for cal in breakfast_cals:
+        #   print(cal, end='\t')
+        # print()
+        print(f'dish len: {len(breakfast_dishes)}')
+        print(f'cal len: {len(breakfast_cals)}')
+        i = 0
+        while i < len(breakfast_dishes):
+            print(f"{breakfast_dishes[i].strip()} -> {breakfast_cals[i].strip()}")
+            i += 1
 
-            if text == "DINNER":
-                mealindicator = 2
-                continue
+        print(f'dish len: {len(lunch_dishes)}')
+        print(f'cal len: {len(lunch_cals)}')
+        i = 0
+        while i < len(lunch_dishes):
+            print(f"{lunch_dishes[i].strip()} -> {lunch_cals[i].strip()}")
+            i += 1
 
-             #Breakfast
-            if mealindicator == 0:
-                #window or item
-                if itemindicator == 0:
-                    if temp == "":
-                        temp = text
-                        continue
-
-                    else:
-                        if text[0].isdigit():
-                            currentitem = temp
-                            currentcal = text
-                            breakfast[currentwindow].append((currentitem,currentcal))
-                        else:
-                            currentwindow = temp
-                            currentitem = text
-                            itemindicator = 1
-
-                #itemcal
-                elif itemindicator == 1:
-                    currentcal = text
-                    dining_hall[currentitem] = ["BREAKFAST", currentwindow, currentcal]
-                    itemindicator = 0
-
-            #Lunch
-            elif mealindicator == 1:
-                # window or item
-                if itemindicator == 0:
-                    if temp == "":
-                        temp = text
-                    else:
-                        if text[0].isdigit():
-                            currentitem = temp
-                            currentcal = text
-                            lunch[currentwindow].append((currentitem, currentcal))
-                        else:
-                            currentwindow = temp
-                            currentitem = text
-                            lunch[currentwindow] = []
-                            itemindicator = 1
-                # itemcal
-                elif itemindicator == 1:
-                    currentcal = text
-                    lunch[currentwindow].append((currentitem, currentcal))
-                    itemindicator = 0
-            #Dinner
-            elif mealindicator == 2:
-                # window or item
-                if itemindicator == 0:
-                    if temp == "":
-                        temp = text
-                    else:
-                        if text[0].isdigit():
-                            currentitem = temp
-                            currentcal = text
-                            dinner[currentwindow].append((currentitem, currentcal))
-                        else:
-                            currentwindow = temp
-                            currentitem = text
-                            dinner[currentwindow] = []
-                            itemindicator = 1
-                # itemcal
-                elif itemindicator == 1:
-                    currentcal = text
-                    dinner[currentwindow].append((currentitem, currentcal))
-                    itemindicator = 0
-
+        print(f'dish len: {len(dinner_dishes)}')
+        print(f'cal len: {len(dinner_cals)}')
+        i = 0
+        while i < len(dinner_dishes):
+            print(f"{dinner_dishes[i].strip()} -> {dinner_cals[i].strip()}")
+            i += 1
 
 
 if __name__ == '__main__':
-    html = urllib.request.urlopen('https://menus.sodexomyway.com/BiteMenu/Menu?menuId=15465&locationId=76929001&whereami=http://rensselaerdining.com/dining-near-me/commons-dining-hall').read()
-    soup = BeautifulSoup(html, 'html.parser')
-
-
-
-
-        # Load the data that PHP sent us
-        try:
-          data = json.loads(sys.argv[1])
-        except:
-          print("ERROR")
-          sys.exit(1)
-
-        Generate some data to send to PHP
-        result = {'res': '', 'menu': '', 'img': ''}
-
-        Send it to stdout (to PHP)
-        print(json.dumps(result))
-
+    test_ = Crawler('cms')
+    test_.crawl()
+# with open('test_cms.json', 'w', encoding='utf-8') as f:
+#   f.write(test_.crawl())
