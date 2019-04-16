@@ -6,6 +6,7 @@ from datetime import datetime
 import requests
 
 
+
 class Crawler:
     '''
     The crawler class used for retrieving information from sodexo's menu page
@@ -89,30 +90,59 @@ class Crawler:
         # for cal in breakfast_cals:
         #   print(cal, end='\t')
         # print()
-        print(f'dish len: {len(breakfast_dishes)}')
-        print(f'cal len: {len(breakfast_cals)}')
-        i = 0
-        while i < len(breakfast_dishes):
-            print(f"{breakfast_dishes[i].strip()} -> {breakfast_cals[i].strip()}")
-            i += 1
+        # print(f'dish len: {len(breakfast_dishes)}')
+        # print(f'cal len: {len(breakfast_cals)}')
+        # i = 0
+        # while i < len(breakfast_dishes):
+        #     print(f"{breakfast_dishes[i].strip()} -> {breakfast_cals[i].strip()}")
+        #     i += 1
+        #
+        # print(f'dish len: {len(lunch_dishes)}')
+        # print(f'cal len: {len(lunch_cals)}')
+        # i = 0
+        # while i < len(lunch_dishes):
+        #     print(f"{lunch_dishes[i].strip()} -> {lunch_cals[i].strip()}")
+        #     i += 1
+        #
+        # print(f'dish len: {len(dinner_dishes)}')
+        # print(f'cal len: {len(dinner_cals)}')
+        # i = 0
+        # while i < len(dinner_dishes):
+        #     print(f"{dinner_dishes[i].strip()} -> {dinner_cals[i].strip()}")
+        #     i += 1
+        return (breakfast_dishes, breakfast_cals), (lunch_dishes, lunch_cals), (dinner_dishes, dinner_cals)
 
-        print(f'dish len: {len(lunch_dishes)}')
-        print(f'cal len: {len(lunch_cals)}')
-        i = 0
-        while i < len(lunch_dishes):
-            print(f"{lunch_dishes[i].strip()} -> {lunch_cals[i].strip()}")
-            i += 1
 
-        print(f'dish len: {len(dinner_dishes)}')
-        print(f'cal len: {len(dinner_cals)}')
-        i = 0
-        while i < len(dinner_dishes):
-            print(f"{dinner_dishes[i].strip()} -> {dinner_cals[i].strip()}")
-            i += 1
+def to_html(name, cal, tp, src="http://placehold.it/700x400", description=""):
+	html = \
+	"""
+	<div class="block {0}-block">
+			<div class="row">
+	          <div class="col-lg-4 col-md-6 mb-4">
+	            <div class="card h-100">
+	              <a href="#"><img class="card-img-top" src="{1}" alt=""></a>
+	              <div class="card-body">
+	                <h4 class="card-title">
+	                  <a href="#">{2}</a>
+	                </h4>
+	                <h5>{3}</h5>
+	                <p class="card-text">{4}</p>
+	              </div>
+	              <div class="card-footer">
+	                <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+	              </div>
+	            </div>
+	          </div>
+	        </div>
+    	</div>
+	"""
+	return html.format(tp, src, name, cal, description)
+
 
 
 if __name__ == '__main__':
     test_ = Crawler('cms')
-    test_.crawl()
+    data = test_.crawl()
+    print(to_html(data[0][0][0], data[0][1][0], "breakfast"))
 # with open('test_cms.json', 'w', encoding='utf-8') as f:
 #   f.write(test_.crawl())
