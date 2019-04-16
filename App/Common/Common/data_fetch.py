@@ -2,6 +2,7 @@ import sys
 import json
 
 from lxml import html
+from datetime import datetime
 import requests
 
 
@@ -45,7 +46,7 @@ class Crawler:
         
         #这个是当天日期
         #current date
-        date = 12
+        date = int(str(datetime.today()).split()[0].split('-')[-1])
         
         
         
