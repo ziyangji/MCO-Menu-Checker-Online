@@ -216,11 +216,32 @@
 
 </body>
 <script type="text/javascript">
+	console.log({$data});
+
 	var hideAll = function() {
 		$('.block').hide();
 	}
 
+	var filename = {
+		cms : "sample_data_cms",
+		barh : "sample_data_barh",
+		sage : "sample_data_sage"
+	}
+
 	$(function() {
+
+		for (var res in filename) {
+			$.ajax({
+			  type: "POST",
+			  url: "__PUBLIC__/assets/data/"+ filename[res] +".json",
+			  data: {}
+			}).done(function( o ) {
+			   console.log(o);
+			});
+		}
+
+
+
 		hideAll();
 		$('.breakfast-block').show();
 

@@ -6,16 +6,6 @@ class IndexController extends CommonController
     public function index()
     {
         $this->redirect('Index/home');
-//        $content = array(
-//            0 => 'Menu Checker',
-//            1 => '\tAn online preview of the RPI dining hall menus.\n\tStudents and dinning hall staffs will be able to upload both text descriptions and pictures of dishes provided by each of the dinning halls.\n\tThe menus will be updated "mealy" by users, and we are considering to collaborate with the dinning halls to make it easier.'
-//        );
-//        
-//        $this->assign('content', $content);
-//
-//        $this->assign('hh', arrange());
-//
-//        $this->display();
     }
     
     public function home()
@@ -53,7 +43,14 @@ class IndexController extends CommonController
     public function restaurant()
     {
         $res_name = I('get.name');
+        
+//        $data = shell_exec(escapeshellcmd('python3 '.$_SERVER['DOCUMENT_ROOT'].'/MCO-Menu-Checker-Online'.'/Public/assets/Python/data_fetch.py'));
+//        
+//        var_dump($data);
+//        var_dump('python '.$_SERVER['DOCUMENT_ROOT'].'/MCO-Menu-Checker-Online'.'/Public/assets/Python/data_fetch.py');
+        
         $this->assign('name', $res_name);
+//        $this->assign('data', $data);
         $this->display();
     }
 }

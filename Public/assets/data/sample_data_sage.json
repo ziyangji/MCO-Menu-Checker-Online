@@ -1,0 +1,64 @@
+{
+  "sage":[
+    {
+      "name": "Scrambled Eggs",
+      "meal": "BREAKFAST",
+      "course": "Hot Breakfast",
+      "cal": "180"
+    },
+    {
+      "name": "Hash Brown Patty",
+      "meal": "BREAKFAST",
+      "course": "Hot Breakfast",
+      "cal": "140"
+    },
+    {
+      "name": "Country Mashed Potatoes",
+      "meal": "LUNCH",
+      "course": "Chefs Table",
+      "cal": "170"
+    },
+    {
+      "name": "Steamed Peas",
+      "meal": "LUNCH",
+      "course": "Chefs Table",
+      "cal": "70"
+    },
+    {
+      "name": "Turmeric Rice Pilaf",
+      "meal": "LUNCH",
+      "course": "Simple Servings",
+      "cal": "130"
+    },
+    {
+      "name": "Jerk Chicken Thigh",
+      "meal": "LUNCH",
+      "course": "Simple Servings",
+      "cal": "170"
+    },
+    {
+      "name": "Quinoa Primavera",
+      "meal": "DINNER",
+      "course": "Chefs Table",
+      "cal": "220"
+    },
+    {
+      "name": "Roasted Rosemary Red Bliss Potatoes",
+      "meal": "DINNER",
+      "course": "Chefs Table",
+      "cal": "150"
+    },
+    {
+      "name": "Herb Seasoned Breadstick",
+      "meal": "DINNER",
+      "course": "Pizza/Casserettes",
+      "cal": "70"
+    },
+    {
+      "name": "Cheese Pizza",
+      "meal": "DINNER",
+      "course": "Pizza/Casserettes",
+      "cal": "250"
+    }
+  ]
+}
