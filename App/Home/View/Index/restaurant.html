@@ -30,13 +30,14 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Home
-              <span class="sr-only">(current)</span>
+          <li class="nav-item">
+            <a class="nav-link" href="../">Home
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Dining Hall
+							<span class="sr-only">(current)</span>
+						</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="https://rcos.io/projects/botusers/mco-menu-checker-online/profile" class="text-white" target="_blank">RCOS Homepage</a>
@@ -142,6 +143,11 @@
 </body>
 <script type="text/javascript">
 
+	String.prototype.replaceAll = function(search, replacement) {
+		var target = this;
+		return target.split(search).join(replacement);
+	};
+
 	var hideAll = function() {
 		$('.block').hide();
 	}
@@ -164,10 +170,12 @@
 					`
 			      	 <div class="col-lg-4 col-md-6 mb-4">
 			            <div class="card h-100">
-			              <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+			              <!--
+										<a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+										-->
 			              <div class="card-body">
 			                <h4 class="card-title">
-			                  <a href="#">${item['name']}</a>
+			                  <a href="#" role="button" data-toggle="modal" data-target="#${item['name'].replaceAll(" ","")}">${item['name']}</a>
 			                </h4>
 			                <h5>${item['cal']}cal</h5>
 			              </div>
@@ -176,6 +184,25 @@
 			              </div>
 			            </div>
 			         </div>
+
+							<div class="modal fade" id="${item['name'].replaceAll(" ","")}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							  <div class="modal-dialog" role="document">
+							    <div class="modal-content">
+							      <div class="modal-header">
+							        <h5 class="modal-title" id="exampleModalLabel">${item['name']}</h5>
+							        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							          <span aria-hidden="true">&times;</span>
+							        </button>
+							      </div>
+							      <div class="modal-body">
+
+							      </div>
+							      <div class="modal-footer">
+							        <button type="button" class="btn btn-primary">Write Comment for ${item['name']}</button>
+							      </div>
+							    </div>
+							  </div>
+							</div>
 			    `
 				);
 			}
