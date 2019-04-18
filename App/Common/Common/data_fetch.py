@@ -4,7 +4,7 @@ import json
 from lxml import html
 from datetime import datetime
 import requests
-from Public.assets.Python.to_json import to_json
+from Public.assets.Python.to_json import to_dict
 
 
 class Crawler:
@@ -34,7 +34,6 @@ class Crawler:
             raise ValueError(f'Target dinning hall ({target}) is not valid')
 
         self.target = target
-
 
     def crawl(self):
         '''
@@ -97,11 +96,11 @@ def clean_up(vals):
     return result
 
 
+# driver function
+def fetch_all(name):
+    result = Crawler(name).crawl()
+    return to_dict(result[0][0], result[0][1]), to_dict(result[1][0], result[1][1]), to_dict(result[2][0], result[2][1])
+
+
 if __name__ == '__main__':
-    test_ = Crawler('cms')
-    data = test_.crawl()
-    # print(to_html(data[0][0][0], data[0][1][0], "breakfast"))
-    with open('test_json.json', 'w', encoding='utf-8') as js:
-        js.write(to_json(data[0][0], data[0][1]))
-    # with open('test_cms.json', 'w', encoding='utf-8') as f:
-    #   f.write(test_.crawl())
+    pass
