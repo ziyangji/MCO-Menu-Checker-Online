@@ -1,0 +1,69 @@
+CREATE TABLE `forum_db`.`user` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(45) NOT NULL,
+  `email` VARCHAR(50),
+  `age` INT,
+  `permission` INT NOT NULL DEFAULT 1,
+  `cdate` DATETIME NOT NULL,
+  PRIMARY KEY (`id`));
+
+ CREATE TABLE `forum_db`.`poster` (
+  `posterId` INT NOT NULL AUTO_INCREMENT,
+  `userId` INT NOT NULL,
+  `title` VARCHAR(100) NOT NULL,
+  `name` VARCHAR(100),
+  `sort` INT NULL,
+  `cdate` DATETIME NOT NULL,
+  PRIMARY KEY (`posterId`));
+
+CREATE TABLE `forum_db`.`reply` (
+  `replyId` INT NOT NULL AUTO_INCREMENT,
+  `posterId` INT NOT NULL,
+  `userId` INT NOT NULL,
+  `name` VARCHAR(100) NOT NULL,
+  `content` LONGTEXT NOT NULL,
+  `sort` INT NULL,
+  `cdate` DATETIME NOT NULL,
+  PRIMARY KEY (`replyId`));
+
+CREATE TABLE `forum_db`.`messager` (
+  `messagerId` INT NOT NULL AUTO_INCREMENT,
+  `userId` INT NOT NULL,
+  `name` VARCHAR(100) NOT NULL,
+  `content` LONGTEXT NOT NULL,
+  `sort` INT NULL,
+  `cdate` DATETIME NOT NULL,
+  PRIMARY KEY (`messagerId`));
+
+CREATE TABLE `forum_db`.`friend` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `userId` INT NOT NULL,
+  `friend` INT NOT NULL,
+  `relation` INT NULL,
+  `cdate` DATETIME NOT NULL,
+  PRIMARY KEY (`id`));
+
+CREATE TABLE `forum_db`.`knowledge` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `section` INT NOT NULL,
+  `courseName` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`id`));
+
+CREATE TABLE `forum_db`.`question` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `userId` INT NOT NULL,
+  `name` VARCHAR(100) NOT NULL,
+  `courseId` INT NOT NULL,
+  `section` INT NOT NULL,
+  `question` LONGTEXT NOT NULL,
+  `cdate` DATETIME NOT NULL,
+  PRIMARY KEY (`id`));
+
+CREATE TABLE `forum_db`.`answer` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(100) NOT NULL,
+  `questionId` INT NOT NULL,
+  `answer` LONGTEXT NOT NULL,
+  `cdate` DATETIME NOT NULL,
+  PRIMARY KEY (`id`));

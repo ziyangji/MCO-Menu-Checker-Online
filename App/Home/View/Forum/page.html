@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width" initial-scale="1" maximum-scale="1" user-scalable="no"/>
+    <script type="text/javascript" src="__PUBLIC__/Static/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Static/bootstrap/js/bootstrap.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/Static/summernote/dist/summernote.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Static/Home/javascripts/default.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Static/Home/javascripts/main.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Static/Home/javascripts/forum.js"></script>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Static/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Static/summernote/dist/summernote.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Static/FontAwesome/css/font-awesome.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Static/Home/stylesheets/default.css"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Static/Home/stylesheets/forum.css"/>
+	<title>{$data.title}</title>
+</head>
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="__MODULE__/Index"><img src="__PUBLIC__/Img/brand.png"></a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class=""><a href="__MODULE__/Home">Home</a></li>
+                    <li class="active"><a href="__MODULE__/Forum">Forum</a></li>
+                    <li class=""><a href="__MODULE__/Admin">My Rocky</a></li>
+                </ul>
+                <form class="navbar-form navbar-left" onsumbit="return searchCheckup();" role="search" action="__MODULE__/Forum/search" method="post">
+                    <div class="form-group">
+                        <input name="searchKey" type="text" class="form-control" placeholder="Search Topics or Rockiors">
+                    </div>
+                    <button type="submit" class="btn btn-default navSearch">Search</button>
+                </form>
+                <ul class="nav navbar-nav navbar-right">
+                    <!-- <li><a href="#">Logout</a></li> -->
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{$name} <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="__MODULE__/Admin">My Rocky</a></li>
+                            <li><a href="#">My Clans</a></li>
+                            <li><a href="#">Settings</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a class="logout" href="#">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+    <div class="container">
+        <div class="well">
+            <empty name="list">
+                    <div class="well form"><h1>There is no content</h1></div>
+            <else />
+                <volist name="list" id="list">
+                    <div class="posterArea well">
+                        <span class="replyId hidden">{$list.replyid}</span>
+                        <h4 class="name"><a type="button" class="" data-toggle="modal" data-target="#{$list.name}">{$list.name}</a>:</h4><br/>
+                        <div class="decoding">{$list.content}</div>
+                        <eq name="list.name" value="$name">
+                            <button class="delete_reply btn btn-danger">Delete</button>
+                        </eq>
+                        <span class="cdate pull-right">{$list.cdate}</span><br/>
+
+                    </div>
+                </volist>
+            </empty>
+            <div class="pageBar">
+                {$page}
+            </div>
+            <div class="well">
+                <div id="posting">
+                    <p>Reply:</p>
+                    <div id="postingContent" name="content"></div>
+                </div>
+                <div>
+                    <button id="reply" class="btn btn-success">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <volist name="users" id="users">
+        <div class="modal fade" id="{$users.name}">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">{$users.name}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <span class="friend_id hidden">{$users.id}</span>
+                        <p>Name:{$users.name}</p>
+                        <p>Age:{$users.age}</p>
+                        <p>E-mail:{$users.email}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button class="btn btn-default addFriend" type="button">Add as friend</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    </volist>
+    
+    <!-- footer -->
+    <br/><br/><br/>
+    <form class="logoutForm" action="__CONTROLLER__/logout" method="get"></form>
+</body>
+</html>
