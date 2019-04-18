@@ -23,8 +23,8 @@ The menus will be updated "mealy" by users, and we are considering to collaborat
 - [x] Get everyone familiar with web technologies (e.g., HTML, JS, CSS, etc)
 - [x] Design and implement program structure
 - [x] Design and implement web UI
-- [ ] Build and link database
-- [ ] Test and bug fix
+- [x] Build and link database
+- [ ] Refactoring
 
 ## Future plans (maybe not for this semester)
 - Implement upload functions
