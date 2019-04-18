@@ -4,7 +4,7 @@ import json
 from lxml import html
 from datetime import datetime
 import requests
-
+from Public.assets.Python.to_json import to_json
 
 
 class Crawler:
@@ -35,82 +35,27 @@ class Crawler:
 
         self.target = target
 
+
     def crawl(self):
         '''
         The crawler function that uses request to get html source, and use lxml.html to build element tree
         '''
         tree = html.fromstring(requests.get(self.url).content)
-        
-        
-        
-        
-        
-        
-        #这个是当天日期
-        #current date
+
+        # current date
         date = int(str(datetime.today()).split()[0].split('-')[-1])
-        
-        
-        
-        
-        
-        
-        
-        # BREAKFAST:
-        # use xpath to retrieve breakfast name
-        breakfast_dishes = tree.xpath(
-            './body/div[@class="my-app"]/div/div[@class="bottom-half"]/div[@class="main-content"]/div[@id="bite-menu"]/div[@id="menuid-{:d}-day"]/div[@class="accordion"]/div[contains(@class, "breakfast")]/div[contains(@class, "accordion-panel")]/div[@class="bite-menu-item"]/div[@class="col-xs-9"]/a[contains(@class, "get-nutritioncalculator")]/text()'.format(date))
-        # use xpath to retrieve breakfast calories (the first cal data is invalid -> use slice to get rid of it)
-        breakfast_cals = tree.xpath(
-            './body/div[@class="my-app"]/div/div[@class="bottom-half"]/div[@class="main-content"]/div[@id="bite-menu"]/div[@id="menuid-{:d}-day"]/div[@class="accordion"]/div[contains(@class, "breakfast")]/div[contains(@class, "accordion-panel")]/div[@class="bite-menu-item"]/div[contains(@class, "text-right")]/a/text()'.format(date))[
-                         1:]
 
-        # TODO: same logic for lunch and dinner, implement them here
-        # LUNCH:
-        lunch_dishes = tree.xpath(
-            './body/div[@class="my-app"]/div/div[@class="bottom-half"]/div[@class="main-content"]/div[@id="bite-menu"]/div[@id="menuid-{:d}-day"]/div[@class="accordion"]/div[contains(@class, "lunch")]/div[contains(@class, "accordion-panel")]/div[@class="bite-menu-item"]/div[@class="col-xs-9"]/a[contains(@class, "get-nutritioncalculator")]/text()'.format(date))
-        # use xpath to retrieve breakfast calories (the first cal data is invalid -> use slice to get rid of it)
-        lunch_cals = tree.xpath(
-            './body/div[@class="my-app"]/div/div[@class="bottom-half"]/div[@class="main-content"]/div[@id="bite-menu"]/div[@id="menuid-{:d}-day"]/div[@class="accordion"]/div[contains(@class, "lunch")]/div[contains(@class, "accordion-panel")]/div[@class="bite-menu-item"]/div[contains(@class, "text-right")]/a/text()'.format(date))[
-                         1:]
+        breakfast = get_dish_and_cal('breakfast', tree, date)
+        lunch = get_dish_and_cal('lunch', tree, date)
+        dinner = get_dish_and_cal('dinner', tree, date)
 
-        # DINNER:
-        dinner_dishes = tree.xpath(
-            './body/div[@class="my-app"]/div/div[@class="bottom-half"]/div[@class="main-content"]/div[@id="bite-menu"]/div[@id="menuid-{:d}-day"]/div[@class="accordion"]/div[contains(@class, "dinner")]/div[contains(@class, "accordion-panel")]/div[@class="bite-menu-item"]/div[@class="col-xs-9"]/a[contains(@class, "get-nutritioncalculator")]/text()'.format(date))
-        # use xpath to retrieve breakfast calories (the first cal data is invalid -> use slice to get rid of it)
-        dinner_cals = tree.xpath(
-            './body/div[@class="my-app"]/div/div[@class="bottom-half"]/div[@class="main-content"]/div[@id="bite-menu"]/div[@id="menuid-{:d}-day"]/div[@class="accordion"]/div[contains(@class, "dinner")]/div[contains(@class, "accordion-panel")]/div[@class="bite-menu-item"]/div[contains(@class, "text-right")]/a/text()'.format(date))[
-                         1:]
+        return breakfast, lunch, dinner
 
-        # TODO: pass data to php, print for debug uses
 
-        # for d in breakfast_dishes:
-        #   print(d, end='\t')
-        # print()
-        # for cal in breakfast_cals:
-        #   print(cal, end='\t')
-        # print()
-        # print(f'dish len: {len(breakfast_dishes)}')
-        # print(f'cal len: {len(breakfast_cals)}')
-        # i = 0
-        # while i < len(breakfast_dishes):
-        #     print(f"{breakfast_dishes[i].strip()} -> {breakfast_cals[i].strip()}")
-        #     i += 1
-        #
-        # print(f'dish len: {len(lunch_dishes)}')
-        # print(f'cal len: {len(lunch_cals)}')
-        # i = 0
-        # while i < len(lunch_dishes):
-        #     print(f"{lunch_dishes[i].strip()} -> {lunch_cals[i].strip()}")
-        #     i += 1
-        #
-        # print(f'dish len: {len(dinner_dishes)}')
-        # print(f'cal len: {len(dinner_cals)}')
-        # i = 0
-        # while i < len(dinner_dishes):
-        #     print(f"{dinner_dishes[i].strip()} -> {dinner_cals[i].strip()}")
-        #     i += 1
-        return (breakfast_dishes, breakfast_cals), (lunch_dishes, lunch_cals), (dinner_dishes, dinner_cals)
+def get_dish_and_cal(time, e_tree, date):
+    dishes = clean_up(e_tree.xpath('./body/div[@class="my-app"]/div/div[@class="bottom-half"]/div[@class="main-content"]/div[@id="bite-menu"]/div[@id="menuid-{0:d}-day"]/div[@class="accordion"]/div[contains(@class, "{1}")]/div[contains(@class, "accordion-panel")]/div[@class="bite-menu-item"]/div[@class="col-xs-9"]/a[contains(@class, "get-nutritioncalculator")]/text()'.format(date, time)))
+    cals = clean_up(e_tree.xpath('./body/div[@class="my-app"]/div/div[@class="bottom-half"]/div[@class="main-content"]/div[@id="bite-menu"]/div[@id="menuid-{0:d}-day"]/div[@class="accordion"]/div[contains(@class, "{1}")]/div[contains(@class, "accordion-panel")]/div[@class="bite-menu-item"]/div[contains(@class, "text-right")]/a/text()'.format(date, time))[1:])
+    return dishes, cals
 
 
 def to_html(name, cal, tp, src="http://placehold.it/700x400", description=""):
@@ -139,10 +84,24 @@ def to_html(name, cal, tp, src="http://placehold.it/700x400", description=""):
 	return html.format(tp, src, name, cal, description)
 
 
+def clean_up(vals):
+    # if type(vals) != type(list()):
+    #     raise RuntimeError(f'clean up: Expected list, but was {type(vals)}')
+
+    result = list()
+    for item in vals:
+        # if type(vals) != type(str()):
+        #     raise RuntimeError(f'clean up: entries inside vals are not string. Was {type(item)}')
+        result.append(str(item).replace('\r', '').strip())
+
+    return result
+
 
 if __name__ == '__main__':
     test_ = Crawler('cms')
     data = test_.crawl()
-    print(to_html(data[0][0][0], data[0][1][0], "breakfast"))
-# with open('test_cms.json', 'w', encoding='utf-8') as f:
-#   f.write(test_.crawl())
+    # print(to_html(data[0][0][0], data[0][1][0], "breakfast"))
+    with open('test_json.json', 'w', encoding='utf-8') as js:
+        js.write(to_json(data[0][0], data[0][1]))
+    # with open('test_cms.json', 'w', encoding='utf-8') as f:
+    #   f.write(test_.crawl())
