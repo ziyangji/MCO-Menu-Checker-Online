@@ -1,4 +1,4 @@
-from app.Common.Common.data_fetch import fetch_all
+from data_fetch import fetch_all
 import json
 
 
