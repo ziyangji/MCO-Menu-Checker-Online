@@ -216,7 +216,6 @@
 
 </body>
 <script type="text/javascript">
-	console.log({$data});
 
 	var hideAll = function() {
 		$('.block').hide();
@@ -233,14 +232,13 @@
 		for (var res in filename) {
 			$.ajax({
 			  type: "POST",
-			  url: "__PUBLIC__/assets/data/"+ filename[res] +".json",
+			  url: "__PUBLIC__/assets/data/" + filename[res] + ".json",
 			  data: {}
 			}).done(function( o ) {
-			   console.log(o);
+				// TODO 渲染 o 进入html element
+			  console.log(o);
 			});
 		}
-
-
 
 		hideAll();
 		$('.breakfast-block').show();
