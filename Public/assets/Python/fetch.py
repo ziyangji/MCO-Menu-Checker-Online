@@ -37,7 +37,7 @@ def run():
 	with open('../data/data_sage.json', 'w', encoding='utf-8') as sage_json:
 		sage_json.write(process_dict(sage, 'sage'))
 
-	with open('data_barh.json', 'w', encoding='utf-8') as barh_json:
+	with open('../data/data_barh.json', 'w', encoding='utf-8') as barh_json:
 		barh_json.write(process_dict(barh, 'barh'))
 
 
