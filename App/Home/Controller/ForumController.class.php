@@ -23,21 +23,21 @@ class ForumController extends CommonController
 	public function page($posterId)
 	{
 
-//		session('posterId',$posterId);
-//		$user = D('User');
-//		$poster = D('Poster');
-//		$reply = D('Reply');
-//
-//		$getReply = $reply;
-//
-//
-//		//subpage
-//		$page = getPage($getReply,5,"posterId = '$posterId'");
-//		$list = $reply->field(true)->where("posterId = '$posterId'")->order('cdate')->limit($page->firstRow.','.$page->listRows)->select();
-//		$this -> assign('page',$page->show());
-//		$this -> assign('list',$list);
-//		$this->assign('users', $user->listUsers());
-//		$this->assign('name', session('name'));
+		session('posterId',$posterId);
+		$user = D('User');
+		$poster = D('Poster');
+		$reply = D('Reply');
+
+		$getReply = $reply;
+
+
+		//subpage
+		$page = getPage($getReply,5,"posterId = '$posterId'");
+		$list = $reply->field(true)->where("posterId = '$posterId'")->order('cdate')->limit($page->firstRow.','.$page->listRows)->select();
+		$this -> assign('page',$page->show());
+		$this -> assign('list',$list);
+		$this->assign('users', $user->listUsers());
+		$this->assign('name', session('name'));
 		$this->display();
 	}
 
