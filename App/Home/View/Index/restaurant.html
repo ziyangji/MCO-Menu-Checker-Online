@@ -166,6 +166,17 @@
 				var item = lst[i];
 				console.log(item);
 				var dish_type = item['meal'].toLowerCase() + '-row';
+
+				// rate generator
+				var rate_num = Math.floor((Math.random() * 5) + 1);
+				var rate = "";
+				for (var i = 0; i < rate_num; i++) {
+					rate += "&#9733; ";
+				}
+				for (var i = 0; i < 5-rate_num; i++) {
+					rate += "&#9734; ";
+				}
+
 				$(`.${dish_type}`).append(
 					`
 			      	 <div class="col-lg-4 col-md-6 mb-4">
@@ -180,7 +191,7 @@
 			                <h5>${item['cal']}cal</h5>
 			              </div>
 			              <div class="card-footer">
-			                <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+			                <small class="text-muted">${rate}</small>
 			              </div>
 			            </div>
 			         </div>
