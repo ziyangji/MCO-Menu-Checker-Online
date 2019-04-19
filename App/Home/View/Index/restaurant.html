@@ -175,7 +175,7 @@
 										-->
 			              <div class="card-body">
 			                <h4 class="card-title">
-			                  <a href="#" role="button" data-toggle="modal" data-target="#${item['name'].replaceAll(" ","")}">${item['name']}</a>
+			                  <a href="#" role="button" data-toggle="modal" data-target="#${item['name'].replaceAll(" ","").replaceAll("&","")}">${item['name']}</a>
 			                </h4>
 			                <h5>${item['cal']}cal</h5>
 			              </div>
@@ -185,7 +185,7 @@
 			            </div>
 			         </div>
 
-							<div class="modal fade" id="${item['name'].replaceAll(" ","")}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal fade" id="${item['name'].replaceAll(" ","").replaceAll("&","")}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 							  <div class="modal-dialog" role="document">
 							    <div class="modal-content">
 							      <div class="modal-header">
