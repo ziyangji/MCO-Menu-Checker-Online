@@ -1,0 +1,199 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="Picture for each dish in dining halls in RPI">
+	<meta name="author" content="BotUsers">
+
+	<!-- This title should be dynamically changed by backend to reflect the name of the dining hall chosen by the user -->
+	<title></title>
+
+	<!-- Link to Bootstrap core CSS -->
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/assets/bootstrap/css/bootstrap.css">
+
+	<!-- Link to custom styles for this page -->
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/assets/stylesheets/diningHall.css">
+
+</head>
+
+<body>
+
+	<!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">Menu</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="../">Home
+            </a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Dining Hall
+							<span class="sr-only">(current)</span>
+						</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://rcos.io/projects/botusers/mco-menu-checker-online/profile" class="text-white" target="_blank">RCOS Homepage</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Contact us</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <div class="container">
+
+    <div class="row">
+
+      <!-- /.col-lg-3 -->
+
+      <div class="col-lg-9">
+
+        <div id="carouselIndicators" class="carousel slide my-4" data-ride="carousel">
+          <ol class="carousel-indicators">
+            <li data-target="#carouselIndicators" data-slide-to="0" class="active"></li>
+          </ol>
+          <div class="carousel-inner" role="listbox">
+
+                <!-- used to present the outline of dish page -->
+                
+                <!-- Picture -->
+                <h1>Picture:</h1>
+
+                <img class="d-block img-fluid" src="__PUBLIC__/assets/Menu/cms/title0.png" alt="First slide">
+                
+                <!-- comment -->
+                <h2>comment:</h2>
+                <p>
+                <textarea cols = "50" rows = "5">Add a comment</textarea>
+                <br/>
+                <input type = "submit" value = "submit"/>
+                <br/>
+                </p>
+
+          </div>
+          <a class="carousel-control-prev" href="#carouselIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next" href="#carouselIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
+
+      <!-- /.col-lg-9 -->
+
+    </div>
+    <!-- /.row -->
+
+  </div>
+  <!-- /.container -->
+
+  <!-- Footer -->
+  <footer class="py-5 bg-dark">
+    <div class="container">
+      <p class="m-0 text-center text-white">Copyright &copy; MCO-Menu-Checker-Online 2019</p>
+     </div>
+    <!-- /.container -->
+  </footer>
+
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" src="__PUBLIC__/assets/javascripts/jquery.js"></script>
+  <script type="text/javascript" src="__PUBLIC__/assets/bootstrap/js/bootstrap.js"></script>
+
+</body>
+<script type="text/javascript">
+
+	String.prototype.replaceAll = function(search, replacement) {
+		var target = this;
+		return target.split(search).join(replacement);
+	};
+
+	var hideAll = function() {
+		$('.block').hide();
+	}
+
+	var filename = {
+		cms : "data_cms",
+		barh : "data_barh",
+		sage : "data_sage"
+	}
+
+	function to_html(data) {
+		// console.log(data);
+		for (var name in data) {
+			var lst = data[name];
+			for (var i in lst) {
+				var item = lst[i];
+				console.log(item);
+				var dish_type = item['meal'].toLowerCase() + '-row';
+
+				// rate generator
+				var rate_num = Math.floor((Math.random() * 5) + 1);
+				var rate = "";
+				for (var i = 0; i < rate_num; i++) {
+					rate += "&#9733; ";
+				}
+				for (var i = 0; i < 5-rate_num; i++) {
+					rate += "&#9734; ";
+				}
+
+				$(`.${dish_type}`).append(
+					`
+			      	 <div class="col-lg-4 col-md-6 mb-4">
+			            <div class="card h-100">
+			              <!--
+										<a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+										-->
+			              <div class="card-body">
+			                <h4 class="card-title">
+			                  <a href="#" role="button" data-toggle="modal" data-target="#${item['name'].replaceAll(" ","").replaceAll("&","").replaceAll(",","")}">${item['name']}</a>
+			                </h4>
+			                <h5>${item['cal']}cal</h5>
+			              </div>
+			              <div class="card-footer">
+			                <small class="text-muted">${rate}</small>
+			              </div>
+			            </div>
+			         </div>
+
+							<div class="modal fade" id="${item['name'].replaceAll(" ","").replaceAll("&","").replaceAll(",","")}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							  <div class="modal-dialog" role="document">
+							    <div class="modal-content">
+							      <div class="modal-header">
+							        <h5 class="modal-title" id="exampleModalLabel">${item['name']}</h5>
+							        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							          <span aria-hidden="true">&times;</span>
+							        </button>
+							      </div>
+							      <div class="modal-body">
+                      <img width="100%" height="100%" src="__PUBLIC__/assets/Menu/cms/${i+1}.jpg">
+							      </div>
+							      <div class="modal-footer">
+							        <button type="button" class="btn btn-primary">Write Comment for ${item['name']}</button>
+							      </div>
+							    </div>
+							  </div>
+							</div>
+			    `
+				);
+			}
+		}
+	}
+
+</script>
+
+</html>
