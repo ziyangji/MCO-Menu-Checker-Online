@@ -143,6 +143,8 @@
 </body>
 <script type="text/javascript">
 
+	var dining_id = "{$name}";
+
 	String.prototype.replaceAll = function(search, replacement) {
 		var target = this;
 		return target.split(search).join(replacement);
@@ -228,8 +230,11 @@
 			  url: "__PUBLIC__/assets/data/" + filename[res] + ".json",
 			  data: {}
 			}).done(function( o ) {
-			   // console.log(o);
-			   to_html(o);
+				for(oi in o) {
+					if (oi == dining_id) {
+						to_html(o);
+					}
+				}
 			});
 		}
 
